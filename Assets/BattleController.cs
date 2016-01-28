@@ -14,18 +14,23 @@ public class BattleController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!Player.turnAvailable && !GameController.frozen && EventQueue.instance.actionEvents.Count < 1) {
-			if (RoomController.instance.enemies.Count < 1) {
-				SpeechBubble.mainBubble.Activate ();
-				SpeechBubble.AddMessage ("all enemies eliminated", false);
-				BattleController.inCombat = false;
-				GameController.ExitEncounter ();
-			} else {
-				foreach (GameObject enemy in RoomController.instance.enemies) {
-					enemy.GetComponent<Corgi> ().DoAction ();
+		if (inCombat) {
+			if (!Player.turnAvailable && !GameController.frozen && EventQueue.instance.actionEvents.Count < 1) {
+				if (RoomController.instance.enemies.Count < 1) {
+					SpeechBubble.mainBubble.Activate ();
+					SpeechBubble.AddMessage ("all enemies eliminated", false);
+					BattleController.inCombat = false;
+					GameController.ExitEncounter ();
+				} else {
+					foreach (GameObject enemy in RoomController.instance.enemies) {
+						enemy.GetComponent<Corgi> ().DoAction ();
+					}
 				}
+				Player.turnAvailable = true;
+			} else {
+				if (!CombatMenu.displayed)
+					CombatMenu.Display ();
 			}
-			Player.turnAvailable = true;
 		}
 	}
 
