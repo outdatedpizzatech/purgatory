@@ -9,9 +9,13 @@ public class ActionEvent {
 	public bool destroy;
 	public string text;
 	public bool executed;
+	public bool combatMenu;
+	public PartyMember partyMember;
 
 	public void Execute(){
-		if (text != null) {
+		if (combatMenu) {
+			CombatMenu.Display (partyMember);	
+		} else if (text != null) {
 			SpeechBubble.AddMessage (text);
 		} else {
 			if (attackable != null) {

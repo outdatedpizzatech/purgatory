@@ -44,9 +44,11 @@ public class Corgi : MonoBehaviour, IAttackable {
 	}
 
 	public void DoAction(){
+		int randomValue = Random.Range (0, PartyMember.members.Count - 1);
+		PartyMember target = PartyMember.members [randomValue];
 		int damage = Random.Range (1, 10);
-		Player.instance.health -= damage;
-		EventQueue.AddMessage (Name() + " bites!");
-		EventQueue.AddEvent (Player.instance.gameObject, damage, DamageTypes.Physical);
+		target.health -= damage;
+		EventQueue.AddMessage (Name() + " bites " + target.memberName + "!");
+		EventQueue.AddEvent (target.gameObject, damage, DamageTypes.Physical);
 	}
 }

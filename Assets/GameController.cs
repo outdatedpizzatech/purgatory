@@ -15,7 +15,14 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Update(){
-		if (!gameOver && Player.instance.health < 1) {
+		bool partyIsAlive = false;
+		foreach (PartyMember partyMember in PartyMember.members) {
+			partyIsAlive = partyMember.health > 0;
+			if (partyIsAlive) {
+				break;
+			}
+		}
+		if (!gameOver && !partyIsAlive) {
 			EnterGameOver ();
 		}
 	}

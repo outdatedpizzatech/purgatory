@@ -13,6 +13,6 @@ public class HealthMeter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		filler.fillAmount = (float)Player.instance.health / (float)Player.instance.maxHealth;
+//		filler.fillAmount = (float)PartyMember.instance.health / (float)PartyMember.instance.maxHealth;
 	}
 }

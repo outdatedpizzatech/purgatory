@@ -47,6 +47,14 @@ public class EventQueue : MonoBehaviour {
 		return(instance.actionEvents.Count - 1);
 	}
 
+	public static int AddShowCombatMenu(PartyMember partyMember, int index){
+		ActionEvent actionEvent = new ActionEvent ();
+		actionEvent.combatMenu = true;
+		actionEvent.partyMember = partyMember;
+		instance.actionEvents.Insert(index, actionEvent);
+		return(instance.actionEvents.Count - 1);
+	}
+
 	public static int AddDestroy(GameObject attackable, int index){
 		ActionEvent actionEvent = new ActionEvent ();
 		actionEvent.attackable = attackable;
@@ -72,5 +80,9 @@ public class EventQueue : MonoBehaviour {
 
 	public static int AddMessage(string message){
 		return(AddMessage (message, instance.actionEvents.Count));
+	}
+
+	public static int AddShowCombatMenu(PartyMember partyMember){
+		return(AddShowCombatMenu (partyMember, instance.actionEvents.Count));
 	}
 }

@@ -13,6 +13,6 @@ public class MagicMeter : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		filler.fillAmount = (float)Player.instance.magic / (float)Player.instance.maxMagic;
+//		filler.fillAmount = (float)PartyMember.instance.magic / (float)PartyMember.instance.maxMagic;
 	}
 }

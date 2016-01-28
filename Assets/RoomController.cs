@@ -54,7 +54,7 @@ public class RoomController : MonoBehaviour {
 	public List<GameObject> AllEntities(){
 		List<GameObject> list = new List<GameObject> ();
 
-		list.Add (Player.instance.gameObject);
+//		list.Add (PartyMember.instance.gameObject);
 		foreach (GameObject enemy in enemies) {
 			list.Add (enemy);
 		}

@@ -6,6 +6,7 @@ public class BattleController : MonoBehaviour {
 
 	public static BattleController instance;
 	public static bool inCombat;
+	public bool combatMenuDisplayed;
 
 	// Use this for initialization
 	void Start () {
@@ -15,9 +16,15 @@ public class BattleController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (inCombat) {
-			if (!Player.turnAvailable && !GameController.frozen && EventQueue.instance.actionEvents.Count < 1) {
+			PartyMember activePartyMember = null;
+			foreach (PartyMember partyMember in PartyMember.members) {
+				if (partyMember.turnAvailable) {
+					activePartyMember = partyMember;
+					break;
+				}
+			}
+			if (activePartyMember == null && !GameController.frozen && EventQueue.instance.actionEvents.Count < 1) {
 				if (RoomController.instance.enemies.Count < 1) {
-					SpeechBubble.mainBubble.Activate ();
 					SpeechBubble.AddMessage ("all enemies eliminated", false);
 					BattleController.inCombat = false;
 					GameController.ExitEncounter ();
@@ -26,19 +33,25 @@ public class BattleController : MonoBehaviour {
 						enemy.GetComponent<Corgi> ().DoAction ();
 					}
 				}
-				Player.turnAvailable = true;
+				foreach (PartyMember partyMember in PartyMember.members) {
+					partyMember.turnAvailable = true;
+				}
 			} else {
-				if (!CombatMenu.displayed)
-					CombatMenu.Display ();
+				if (!combatMenuDisplayed && EventQueue.instance.actionEvents.Count < 1) {
+					combatMenuDisplayed = true;
+					print ("show me the menu");
+					EventQueue.AddShowCombatMenu (activePartyMember);
+				}
 			}
 		}
 	}
 
 	public static void StartBattle(){
 		inCombat = true;
-		SpeechBubble.mainBubble.Activate ();
-		SpeechBubble.AddMessage ("You encounter some baddies", false);
-		Player.turnAvailable = true;
+		EventQueue.AddMessage ("You encounter some baddies");
+		foreach (PartyMember partyMember in PartyMember.members) {
+			partyMember.turnAvailable = true;
+		}
 	}
 
 
