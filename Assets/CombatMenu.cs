@@ -57,6 +57,7 @@ public class CombatMenu : MonoBehaviour {
 		foreach (GameObject enemy in RoomController.instance.enemies) {
 			enemy.GetComponent<Collider2D> ().enabled = true;
 		}
+		Player.instance.GetComponent<Collider2D> ().enabled = true;
 		EventQueue.AddMessage ("select target");
 	}
 
@@ -65,5 +66,6 @@ public class CombatMenu : MonoBehaviour {
 		foreach (GameObject enemy in RoomController.instance.enemies) {
 			enemy.GetComponent<Collider2D> ().enabled = false;
 		}
+		Player.instance.GetComponent<Collider2D> ().enabled = false;
 	}
 }

@@ -31,10 +31,7 @@ public class Player : MonoBehaviour, IAttackable {
 
 
 	void OnMouseDown() {
-		GameObject.Find ("Combat").GetComponent<Canvas>().enabled = true;
-		GameObject.Find ("Combat").transform.Find ("CombatMenu").GetComponent<CombatMenu> ().target = gameObject;
-		Transform menuTransform = CombatMenu.instance.transform;
-		menuTransform.position = Camera.main.WorldToScreenPoint (transform.position);
+		CombatMenu.SelectTarget (gameObject);
 	}
 
 	public void ReceiveHit(int damage, DamageTypes damageType){
