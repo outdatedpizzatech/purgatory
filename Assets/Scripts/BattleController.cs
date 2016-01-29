@@ -54,5 +54,9 @@ public class BattleController : MonoBehaviour {
 		}
 	}
 
+	public static void ExecuteAction(Ability ability, PartyMember partyMember, GameObject target){
+		ability.Perform(partyMember, target);
+		partyMember.turnAvailable = false;
+	}
 
 }

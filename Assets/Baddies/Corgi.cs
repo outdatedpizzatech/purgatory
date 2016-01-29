@@ -44,7 +44,7 @@ public class Corgi : MonoBehaviour, IAttackable {
 	}
 
 	public void DoAction(){
-		int randomValue = Random.Range (0, PartyMember.members.Count - 1);
+		int randomValue = Random.Range (0, PartyMember.members.Count);
 		PartyMember target = PartyMember.members [randomValue];
 		int damage = Random.Range (1, 10);
 		target.health -= damage;
