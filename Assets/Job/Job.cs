@@ -18,4 +18,12 @@ public class Job {
 	public virtual string Name(){
 		return("NoJob");
 	}
+
+	public virtual int Strength(){
+		return(1);
+	}
+
+	public virtual List<LevelUpStruct> LevelUps(){
+		return(new List<LevelUpStruct>());
+	}
 }

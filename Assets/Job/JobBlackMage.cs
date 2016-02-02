@@ -7,6 +7,7 @@ public class JobBlackMage : Job {
 
 	public override List<Type> Abilities(){
 		List<Type> list = new List<Type> ();
+		list.Add (typeof(AbilityAttack));
 		list.Add (typeof(AbilityFire));
 		return(list);
 	}

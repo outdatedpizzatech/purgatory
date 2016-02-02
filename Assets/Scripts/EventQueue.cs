@@ -24,14 +24,10 @@ public class EventQueue : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (CurrentEvent () != null) {
-			print ("currentEventFound");
 			if (!CurrentEvent ().executed) {
-				print ("currentEventExecuted");
 				CurrentEvent ().Execute ();
 			} else {
-				print ("currentEventFinished: " + CurrentEvent().Finished());
 				if(CurrentEvent().Finished()){
-					print ("currentEventFinishedAndRemoved");
 					actionEvents.RemoveAt (0);
 				}
 			}

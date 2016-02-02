@@ -62,7 +62,6 @@ public class SpeechBubble : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		print ("DONE: " + done);
 		currentTimeBetweenCharacters += Time.deltaTime;
 		if (Initialized ()) {
 			transform.position = initialLocation;
@@ -114,7 +113,6 @@ public class SpeechBubble : MonoBehaviour {
 	
 	public void DismissMe(){
 		if(dismissable && Finished()){
-			print ("dismissed!");
 			done = true;
 			textIndex = 0;
 			textBubbleIndex = 0;
@@ -124,7 +122,6 @@ public class SpeechBubble : MonoBehaviour {
 			transform.position = new Vector3(9999, 9999, 9999);
 			GameController.Unfreeze ();
 		}
-		print ("dismissal event..");
 	}
 	
 	public void AdvanceMe(){

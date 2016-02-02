@@ -14,4 +14,23 @@ public class JobWarrior : Job {
 	public override string Name(){
 		return("Warrior");
 	}
+
+	public override int Strength(){
+		return(5);
+	}
+
+	public override List<LevelUpStruct> LevelUps(){
+		List<LevelUpStruct> levelUps = new List<LevelUpStruct> ();
+		levelUps.Add (new LevelUpStruct ("Stats I", 100, LevelUpStatsI));
+		levelUps.Add (new LevelUpStruct ("Stats II", 300, LevelUpStatsII));
+		return(levelUps);
+	}
+
+	public void LevelUpStatsI(PartyMember partyMember){
+		partyMember.strength += 5;
+	}
+
+	public void LevelUpStatsII(PartyMember partyMember){
+		partyMember.strength += 20;
+	}
 }

@@ -16,6 +16,8 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public List<Ability> abilityList = new List<Ability>();
 	public Job job;
 	public static int currency;
+	public int strength;
+	public List<List<bool>> levelUps = new List<List<bool>>();
 
 	// Use this for initialization
 	void Start () {
@@ -25,11 +27,24 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		turnAvailable = true;
 		SetJob ();
 		SetAbilities ();
+		SetLevelUps ();
+	}
+
+	void SetLevelUps(){
+		foreach (Job selectedJob in Job.jobs) {
+			int count = selectedJob.LevelUps ().Count;
+			List<bool> list = new List<bool>();
+			foreach (LevelUpStruct levelUpStruct in selectedJob.LevelUps()) {
+				list.Add (false);
+			}
+			levelUps.Add (list);
+		}
 	}
 
 	void SetJob(){
 		int randomValue = UnityEngine.Random.Range(0, Job.jobs.Count);
 		job = Job.jobs[randomValue];
+		strength = job.Strength();
 	}
 	
 	// Update is called once per frame
@@ -43,7 +58,11 @@ public class PartyMember : MonoBehaviour, IAttackable {
 
 
 	void OnMouseDown() {
-		CombatMenu.SelectTarget (gameObject);
+		if (GameController.inEncounter) {
+			CombatMenu.SelectTarget (gameObject);
+		} else {
+			LevelUpHUD.ShowAbilitiesForPartyMember (this);
+		}
 	}
 
 	public void ReceiveHit(int damage, DamageTypes damageType){
@@ -59,6 +78,11 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		foreach(Type jobType in job.Abilities()){
 			abilityList.Add ((Ability)Activator.CreateInstance(jobType));
 		}
+	}
+
+	public void UpdateLevelUpSlot(int i){
+		int jobIndex = Job.jobs.IndexOf (job);
+		levelUps [jobIndex] [i] = true;
 	}
 
 	public int Health(){
