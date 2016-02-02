@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class RoomController : MonoBehaviour {
 
+	public static int floorNumber;
+
 	public static RoomController instance;
 
 	public List<GameObject> enemies = new List<GameObject>();
@@ -12,6 +14,7 @@ public class RoomController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		instance = this;
+		floorNumber = 0;
 	}
 	
 	// Update is called once per frame
@@ -22,7 +25,7 @@ public class RoomController : MonoBehaviour {
 	public void NextRoom(){
 		
 		if(Random.value < 1f){
-//			floorNumber++;
+			floorNumber++;
 
 			AddEnemy ();
 			AddEnemy ();
