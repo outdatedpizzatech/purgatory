@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Corgi : MonoBehaviour, IAttackable {
+public class Baddie : MonoBehaviour, IAttackable {
 
 	public int health;
 
@@ -27,28 +27,18 @@ public class Corgi : MonoBehaviour, IAttackable {
 		}
 	}
 
-	public string Name(){
-		return("Corgi-sama");
+	public virtual string Name(){
+		return("NoName");
 	}
 
 	public int Health(){
 		return(health);
 	}
 
-	public void Test(){
-		print ("test");
-	}
-
 	void OnMouseDown() {
 		CombatMenu.SelectTarget (gameObject);
 	}
 
-	public void DoAction(){
-		int randomValue = Random.Range (0, PartyMember.members.Count);
-		PartyMember target = PartyMember.members [randomValue];
-		int damage = Random.Range (1, 10);
-		target.health -= damage;
-		EventQueue.AddMessage (Name() + " bites " + target.memberName + "!");
-		EventQueue.AddEvent (target.gameObject, damage, DamageTypes.Physical);
+	public virtual void DoAction(){
 	}
 }

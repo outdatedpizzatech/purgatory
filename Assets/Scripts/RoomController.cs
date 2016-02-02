@@ -22,6 +22,8 @@ public class RoomController : MonoBehaviour {
 	public void NextRoom(){
 		
 		if(Random.value < 1f){
+//			floorNumber++;
+
 			AddEnemy ();
 			AddEnemy ();
 
@@ -46,7 +48,12 @@ public class RoomController : MonoBehaviour {
 	}
 
 	void AddEnemy(){
-		GameObject enemyObject = Instantiate (Resources.Load ("Corgi"), Vector3.zero, Quaternion.identity) as GameObject;
+		GameObject enemyObject;
+		if(Random.value < .5f){
+			enemyObject = Instantiate (Resources.Load ("Baddies/Corgi"), Vector3.zero, Quaternion.identity) as GameObject;
+		}else{
+			enemyObject = Instantiate (Resources.Load ("Baddies/Frog"), Vector3.zero, Quaternion.identity) as GameObject;
+		}
 		enemies.Add (enemyObject);
 	}
 

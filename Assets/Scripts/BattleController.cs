@@ -30,7 +30,7 @@ public class BattleController : MonoBehaviour {
 				if (activePartyMember == null && EventQueue.instance.actionEvents.Count < 1) {
 					if (RoomController.instance.enemies.Count > 0) {
 						foreach (GameObject enemy in RoomController.instance.enemies) {
-							enemy.GetComponent<Corgi> ().DoAction ();
+							enemy.GetComponent<Baddie> ().DoAction ();
 						}
 					}
 					foreach (PartyMember partyMember in PartyMember.members) {
