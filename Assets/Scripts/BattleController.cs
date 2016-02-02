@@ -18,6 +18,9 @@ public class BattleController : MonoBehaviour {
 		if (inCombat) {
 			if (RoomController.instance.enemies.Count < 1) {
 				EventQueue.AddMessage ("all enemies eliminated");
+				int currency = 100;
+				EventQueue.AddMessage ("the party finds " + currency + " currency");
+				PartyMember.currency += currency;
 				BattleController.inCombat = false;
 			} else {
 				PartyMember activePartyMember = null;

@@ -15,6 +15,7 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public string memberName;
 	public List<Ability> abilityList = new List<Ability>();
 	public Job job;
+	public static int currency;
 
 	// Use this for initialization
 	void Start () {
