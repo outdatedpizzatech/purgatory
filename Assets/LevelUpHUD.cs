@@ -6,11 +6,16 @@ public class LevelUpHUD : MonoBehaviour {
 
 	public static LevelUpHUD instance;
 	public static PartyMember selectedPartyMember;
+	public static int selectedIndex;
+	public static LevelUpStruct.Perform selectedPerform;
+	public Vector3 confirmButtonPosition;
 
 	// Use this for initialization
 	void Start () {
 		instance = this;
 		selectedPartyMember = null;
+		confirmButtonPosition = instance.transform.Find ("ConfirmLevelUp").position;
+		instance.transform.Find ("ConfirmLevelUp").position = new Vector3(9999, 9999, 0);
 	}
 	
 	// Update is called once per frame
@@ -40,16 +45,25 @@ public class LevelUpHUD : MonoBehaviour {
 
 			LevelUpStruct.Perform capturedPerform = levelUpStruct.performer;
 			int capturedIndex = i;
+			string capturedName = levelUpStruct.name;
+			string capturedDescription = levelUpStruct.description;
 
 			button.onClick.AddListener( delegate {
-				ExecuteLevelUp(capturedPerform, capturedIndex); } );
-
+				ConfirmLevelUp(capturedName, capturedDescription, capturedPerform, capturedIndex); } );
 			i++;
 		}
 	}
 
-	public static void ExecuteLevelUp(LevelUpStruct.Perform perform, int selectedSlot){
-		perform (selectedPartyMember);
-		selectedPartyMember.UpdateLevelUpSlot (selectedSlot);
+	public static void ConfirmLevelUp(string name, string description, LevelUpStruct.Perform perform, int inputSelectedIndex){
+		selectedIndex = inputSelectedIndex;
+		selectedPerform = perform;
+		EventQueue.AddMessage (name + ": " + description);
+		instance.transform.Find ("ConfirmLevelUp").position = instance.confirmButtonPosition;
+	}
+
+	public void ExecuteLevelUp(){
+		selectedPerform (selectedPartyMember);
+		selectedPartyMember.UpdateLevelUpSlot (selectedIndex);
+		transform.Find ("ConfirmLevelUp").position = new Vector3(9999, 9999, 0);
 	}
 }

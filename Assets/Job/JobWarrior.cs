@@ -21,13 +21,14 @@ public class JobWarrior : Job {
 
 	public override List<LevelUpStruct> LevelUps(){
 		List<LevelUpStruct> levelUps = new List<LevelUpStruct> ();
-		levelUps.Add (new LevelUpStruct ("Stats I", 100, LevelUpStatsI));
-		levelUps.Add (new LevelUpStruct ("Stats II", 300, LevelUpStatsII));
+		levelUps.Add (new LevelUpStruct ("Stats I", "Raises strength by 5", 100, LevelUpStatsI));
+		levelUps.Add (new LevelUpStruct ("Stats II", "Raises strength by 20", 300, LevelUpStatsII));
 		return(levelUps);
 	}
 
 	public void LevelUpStatsI(PartyMember partyMember){
 		partyMember.strength += 5;
+		EventQueue.AddMessage ("Strength increased by 5");
 	}
 
 	public void LevelUpStatsII(PartyMember partyMember){
