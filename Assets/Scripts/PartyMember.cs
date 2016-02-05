@@ -28,6 +28,7 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		SetJob ();
 		SetAbilities ();
 		SetLevelUps ();
+		currency = 500;
 	}
 
 	void SetLevelUps(){
@@ -83,6 +84,11 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public void UpdateLevelUpSlot(int i){
 		int jobIndex = Job.jobs.IndexOf (job);
 		levelUps [jobIndex] [i] = true;
+	}
+
+	public bool HasLevelUpSlot(int i){
+		int jobIndex = Job.jobs.IndexOf (job);
+		return(levelUps [jobIndex] [i]);
 	}
 
 	public int Health(){
