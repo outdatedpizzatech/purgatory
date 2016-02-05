@@ -57,6 +57,7 @@ public class ShopHUD : MonoBehaviour {
 		}
 
 		itemList.Clear ();
+		PartyMember.UnselectAll ();
 
 		DestroyButtons ();
 	}
@@ -133,5 +134,6 @@ public class ShopHUD : MonoBehaviour {
 		ClearButtonHighlights ();
 		selectedItem = null;
 		selectedPartyMember = null;
+		PartyMember.UnselectAll ();
 	}
 }

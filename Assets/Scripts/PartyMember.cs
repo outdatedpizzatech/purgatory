@@ -61,13 +61,22 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		return("playur");
 	}
 
+	public static void UnselectAll(){
+		foreach (PartyMember partyMember in PartyMember.members) {
+			partyMember.Unselect ();
+		}
+	}
+
 
 	void OnMouseDown() {
+		UnselectAll ();
 		if (GameController.inEncounter) {
 			CombatMenu.SelectTarget (gameObject);
 		} else if (GameController.inShopMenu) {
+			Select ();
 			ShopHUD.SelectPartyMember (gameObject);
 		}else {
+			Select ();
 			LevelUpHUD.ShowAbilitiesForPartyMember (this);
 		}
 	}
@@ -95,6 +104,14 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public bool HasLevelUpSlot(int i){
 		int jobIndex = Job.jobs.IndexOf (job);
 		return(levelUps [jobIndex] [i]);
+	}
+
+	public void Select(){
+		transform.Find ("Selector").GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
+	}
+
+	public void Unselect(){
+		transform.Find ("Selector").GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0);
 	}
 
 	public int Health(){
