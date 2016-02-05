@@ -39,7 +39,26 @@ public class LevelUpHUD : MonoBehaviour {
 		}
 	}
 
+	public void Close(){
+		GameController.ExitLevelUpMenu ();
+		instance.transform.Find ("ConfirmLevelUp").position = new Vector3(9999, 9999, 0);
+		prompt.text = "";
+		foreach (PartyMember partyMember in PartyMember.members) {
+			partyMember.GetComponent<Collider2D> ().enabled = false;
+		}
+
+		DestroyButtons ();
+	}
+
+	public static void DestroyButtons(){
+		foreach(GameObject button in buttonList){
+			Destroy (button);
+		}
+		buttonList = new List<GameObject> ();
+	}
+
 	public static void ShowAbilitiesForPartyMember(PartyMember partyMember){
+		DestroyButtons ();
 		instance.prompt.text = "Select a level up";
 		selectedPartyMember = partyMember;
 		int i = 0;
