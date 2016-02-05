@@ -65,7 +65,9 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	void OnMouseDown() {
 		if (GameController.inEncounter) {
 			CombatMenu.SelectTarget (gameObject);
-		} else {
+		} else if (GameController.inShopMenu) {
+			ShopHUD.SelectPartyMember (gameObject);
+		}else {
 			LevelUpHUD.ShowAbilitiesForPartyMember (this);
 		}
 	}
