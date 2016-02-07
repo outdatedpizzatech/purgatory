@@ -12,12 +12,14 @@ public class LevelUpHUD : MonoBehaviour {
 	public Vector3 confirmButtonPosition;
 	public Text prompt;
 	public static List<GameObject> buttonList;
+	public Canvas canvas;
 
 
 	// Use this for initialization
 	void Start () {
 		instance = this;
 		selectedPartyMember = null;
+		canvas = GetComponent<Canvas> ();
 		confirmButtonPosition = instance.transform.Find ("ConfirmLevelUp").position;
 		prompt = transform.Find ("Prompt").GetComponent<Text>();
 		prompt.text = "";

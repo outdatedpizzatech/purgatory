@@ -28,27 +28,27 @@ public class GameController : MonoBehaviour {
 			EnterGameOver ();
 		}
 		if (gameOver) {
-			GameObject.Find ("Combat").GetComponent<Canvas> ().enabled = false;
+			GameObject.Find ("CombatMenu").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("Navigation").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("LevelUpHUD").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("ShopHUD").GetComponent<Canvas> ().enabled = false;	
 		} else if (inLevelUpMenu) {
-			GameObject.Find ("Combat").GetComponent<Canvas> ().enabled = false;
+			GameObject.Find ("CombatMenu").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("Navigation").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("LevelUpHUD").GetComponent<Canvas> ().enabled = true;
 			GameObject.Find ("ShopHUD").GetComponent<Canvas> ().enabled = false;	
 		} else if (inEncounter) {
-			GameObject.Find ("Combat").GetComponent<Canvas> ().enabled = true;
+			GameObject.Find ("CombatMenu").GetComponent<Canvas> ().enabled = true;
 			GameObject.Find ("Navigation").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("LevelUpHUD").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("ShopHUD").GetComponent<Canvas> ().enabled = false;	
 		} else if (inShopMenu) {
-			GameObject.Find ("Combat").GetComponent<Canvas> ().enabled = false;
+			GameObject.Find ("CombatMenu").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("Navigation").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("LevelUpHUD").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("ShopHUD").GetComponent<Canvas> ().enabled = true;	
 		} else {
-			GameObject.Find ("Combat").GetComponent<Canvas> ().enabled = false;
+			GameObject.Find ("CombatMenu").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("Navigation").GetComponent<Canvas> ().enabled = true;
 			GameObject.Find ("LevelUpHUD").GetComponent<Canvas> ().enabled = false;
 			GameObject.Find ("ShopHUD").GetComponent<Canvas> ().enabled = false;	
