@@ -19,6 +19,9 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public int strength;
 	public List<List<bool>> levelUps = new List<List<bool>>();
 	public List<Item> heldItems = new List<Item>();
+	public Item weapon;
+	public Item armor;
+	public Item accessory;
 
 	// Use this for initialization
 	void Start () {
@@ -33,6 +36,9 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		GameObject potion = Instantiate (Resources.Load ("Items/Potion"), transform.position, Quaternion.identity) as GameObject;
 		heldItems.Add (potion.GetComponent<Item> ());
 		potion.GetComponent<Item> ().owner = this;
+		GameObject sword = Instantiate (Resources.Load ("Items/Sword"), transform.position, Quaternion.identity) as GameObject;
+		heldItems.Add (sword.GetComponent<Item> ());
+		sword.GetComponent<Item> ().owner = this;
 	}
 
 	void SetLevelUps(){

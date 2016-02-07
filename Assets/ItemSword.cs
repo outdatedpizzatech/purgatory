@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ItemPotion : Item {
+public class ItemSword : Item {
 
 	// Use this for initialization
 	void Start () {
@@ -13,23 +13,27 @@ public class ItemPotion : Item {
 	
 	}
 
+	public override ItemTypes ItemType(){
+		return(ItemTypes.Weapon);
+	}
+
 	public override void Use(){
 		owner.heldItems.Remove (this);
+		if(owner.weapon != null) owner.heldItems.Add (owner.weapon);
+		owner.weapon = this;
 		owner.turnAvailable = false;
-		EventQueue.AddMessage (owner.memberName + " drank a potion");
-		EventQueue.AddEvent (owner.gameObject, -20, DamageTypes.Physical);
-		Destroy (gameObject);
+		EventQueue.AddMessage (owner.memberName + " equipped sword");
 	}
 
 	public override string Name(){
-		return("Potion");
+		return("Sword");
 	}
 
 	public override string Description(){
-		return("Heals user for 20 HP");
+		return("I dunno, it's a sword");
 	}
 
 	public override int Cost(){
-		return(150);
+		return(300);
 	}
 }

@@ -4,9 +4,6 @@ using System.Collections;
 public class Item : MonoBehaviour {
 
 	public PartyMember owner;
-	public int cost;
-	public string itemName;
-	public string description;
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +13,10 @@ public class Item : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public virtual ItemTypes ItemType(){
+		return(ItemTypes.Consumable);
 	}
 
 	public virtual void Use(){
