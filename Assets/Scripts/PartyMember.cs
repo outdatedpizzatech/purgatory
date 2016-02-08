@@ -50,6 +50,7 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		GameObject sword = Instantiate (Resources.Load ("Items/Sword"), transform.position, Quaternion.identity) as GameObject;
 		heldItems.Add (sword.GetComponent<Item> ());
 		sword.GetComponent<Item> ().owner = this;
+		Unselect ();
 	}
 
 	void SetLevelUps(){
@@ -125,11 +126,11 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	}
 
 	public void Select(){
-		transform.Find ("Selector").GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
+		transform.Find ("Selector").GetComponent<Image> ().color = new Color (1, 1, 1, 1);
 	}
 
 	public void Unselect(){
-		transform.Find ("Selector").GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0);
+		transform.Find ("Selector").GetComponent<Image> ().color = new Color (1, 1, 1, 0);
 	}
 
 	public int Health(){

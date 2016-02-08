@@ -18,6 +18,7 @@ public class CombatMenu : MonoBehaviour {
 	public GameObject itemActions;
 	public List<GameObject> buttonList;
 	public bool giveItem;
+	private Button attackButton;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +30,8 @@ public class CombatMenu : MonoBehaviour {
 		itemActions = transform.Find ("ItemActions").gameObject;
 		itemActions.SetActive (false);
 		buttonList = new List<GameObject> ();
+		attackButton = transform.Find ("AttackButton").GetComponent<Button> ();
+		attackButton.gameObject.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -43,6 +46,7 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public static void Hide(){
+		instance.attackButton.gameObject.SetActive (false);
 		instance.itemActions.SetActive (false);
 		instance.GetComponent<Canvas> ().enabled = false;
 		foreach(GameObject button in instance.buttons){
@@ -60,29 +64,33 @@ public class CombatMenu : MonoBehaviour {
 
 	public void ShowActions(){
 		ClearButtonHighlights ();
+		attackButton.gameObject.SetActive (true);
 		backButton.SetActive (false);
 		itemActions.SetActive (false);
-		selectedItem = null;
+		selectedItem = null;	
 		prompt.text = "";
+		transform.Find ("PartyMemberName").GetComponent<Text> ().text = activePartyMember.memberName;
+
+
 		int i = 0;
 		foreach(Ability ability in activePartyMember.abilityList){
+			if (i != 0) {
+				Vector3 newPosition = transform.position;
+				newPosition.y += (i * 50);
+				GameObject buttonObject = Instantiate (Resources.Load ("ActionButton"), newPosition, Quaternion.identity) as GameObject;
+				buttonObject.transform.parent = transform;
+				Button button = buttonObject.GetComponent<Button> ();
+				button.transform.Find ("Text").GetComponent<Text> ().text = ability.Name ();
 
-			Vector3 newPosition = transform.position;
-			newPosition.y += (i * 50);
-			GameObject buttonObject = Instantiate (Resources.Load ("ActionButton"), newPosition, Quaternion.identity) as GameObject;
-			buttonObject.transform.parent = transform;
-			Button button = buttonObject.GetComponent<Button>();
-			button.transform.Find ("Text").GetComponent<Text> ().text = ability.Name();
+				Ability capturedAbility = ability;
 
-			Ability capturedAbility = ability;
+				button.onClick.AddListener (delegate {
+					SelectAbility (capturedAbility);
+				});
 
-			button.onClick.AddListener( delegate {
-				SelectAbility(capturedAbility); } );
+				buttons.Add (buttonObject);
 
-			buttons.Add (buttonObject);
-
-			transform.Find ("PartyMemberName").GetComponent<Text> ().text = activePartyMember.memberName;
-
+			}
 			i++;
 		}
 
@@ -114,6 +122,12 @@ public class CombatMenu : MonoBehaviour {
 
 			i++;
 		}
+
+		attackButton.onClick.RemoveAllListeners ();
+
+		attackButton.onClick.AddListener (delegate {
+			SelectAbility (activePartyMember.abilityList[0]);
+		});
 	}
 
 	public static void HighlightButton(GameObject buttonObject){
@@ -125,6 +139,10 @@ public class CombatMenu : MonoBehaviour {
 		foreach(GameObject button in instance.buttonList){
 			button.transform.Find("Image").GetComponent<Image> ().color = Color.white;
 		}
+	}
+
+	public void DoAttack(){
+		SelectAbility (activePartyMember.abilityList [0]);
 	}
 
 	public void SelectAbility(Ability ability){
