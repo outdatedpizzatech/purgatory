@@ -134,7 +134,7 @@ public class CombatMenu : MonoBehaviour {
 			enemy.GetComponent<Collider2D> ().enabled = true;
 		}
 		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.GetComponent<Collider2D> ().enabled = true;
+			partyMember.EnableClick ();
 		}
 		foreach(GameObject button in instance.buttons){
 			if (button != null) {
@@ -168,7 +168,7 @@ public class CombatMenu : MonoBehaviour {
 		print ("why u no select?");
 		giveItem = true;
 		foreach (PartyMember partyMember in PartyMember.members) {
-			if(activePartyMember != partyMember) partyMember.GetComponent<Collider2D> ().enabled = true;
+			if(activePartyMember != partyMember) partyMember.EnableClick();
 		}
 		foreach(GameObject button in instance.buttons){
 			if (button != null) {
@@ -201,7 +201,7 @@ public class CombatMenu : MonoBehaviour {
 			enemy.GetComponent<Collider2D> ().enabled = false;
 		}
 		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.GetComponent<Collider2D> ().enabled = false;
+			partyMember.DisableClick ();
 		}
 		Hide ();
 	}

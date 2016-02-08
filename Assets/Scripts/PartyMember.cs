@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using System;
 
 public class PartyMember : MonoBehaviour, IAttackable {
@@ -22,9 +23,19 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public Item weapon;
 	public Item armor;
 	public Item accessory;
+	private Button button;
+
+	public void DisableClick(){
+		button.enabled = false;
+	}
+
+	public void EnableClick(){
+		button.enabled = true;
+	}
 
 	// Use this for initialization
 	void Start () {
+		button = GetComponent<Button> ();
 		health = maxHealth;
 		magic = maxMagic;
 		members.Add (this);
@@ -74,7 +85,8 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	}
 
 
-	void OnMouseDown() {
+	public void DoClickAction() {
+		print ("ya clicked me!");
 		UnselectAll ();
 		if (GameController.inEncounter) {
 			CombatMenu.SelectTarget (gameObject);

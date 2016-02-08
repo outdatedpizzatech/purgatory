@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class HealthMeter : MonoBehaviour {
+public class MemberName : MonoBehaviour {
 
 	private PartyMember partyMember;
 	private Text text;
@@ -15,6 +15,6 @@ public class HealthMeter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		text.text = partyMember.health.ToString();
+		text.text = partyMember.memberName;
 	}
 }

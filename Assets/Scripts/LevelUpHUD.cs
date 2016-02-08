@@ -37,7 +37,7 @@ public class LevelUpHUD : MonoBehaviour {
 		prompt.text = "Select a party member";
 
 		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.GetComponent<Collider2D> ().enabled = true;
+			partyMember.EnableClick ();
 		}
 	}
 
@@ -47,7 +47,7 @@ public class LevelUpHUD : MonoBehaviour {
 		instance.transform.Find ("ConfirmLevelUp").position = new Vector3(9999, 9999, 0);
 		prompt.text = "";
 		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.GetComponent<Collider2D> ().enabled = false;
+			partyMember.DisableClick ();
 		}
 
 		DestroyButtons ();

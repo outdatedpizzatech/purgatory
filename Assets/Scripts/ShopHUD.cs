@@ -36,7 +36,7 @@ public class ShopHUD : MonoBehaviour {
 		prompt.text = "Select an item and a party member";
 
 		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.GetComponent<Collider2D> ().enabled = true;
+			partyMember.EnableClick ();
 		}
 
 		GameObject itemObject = Instantiate (Resources.Load ("Items/Potion"), new Vector3 (9999, 9999, 0), Quaternion.identity) as GameObject;
@@ -49,7 +49,7 @@ public class ShopHUD : MonoBehaviour {
 		instance.transform.Find ("Buy").position = new Vector3(9999, 9999, 0);
 		prompt.text = "";
 		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.GetComponent<Collider2D> ().enabled = false;
+			partyMember.DisableClick ();
 		}
 
 		foreach (GameObject item in itemList) {

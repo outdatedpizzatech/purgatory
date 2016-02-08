@@ -5,12 +5,11 @@ using UnityEngine.UI;
 public class MagicMeter : MonoBehaviour {
 
 	private Image filler;
-	public GameObject partyMemberObject;
 	private PartyMember partyMember;
 
 	// Use this for initialization
 	void Start () {
-		partyMember = partyMemberObject.GetComponent<PartyMember> ();
+		partyMember = transform.parent.GetComponent<PartyMember> ();
 		filler = transform.Find ("Meter").GetComponent<Image> ();
 	}
 
