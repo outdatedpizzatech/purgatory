@@ -16,4 +16,8 @@ public class AbilityHeal : Ability {
 	public override string Name () {
 		return("Heal");
 	}
+
+	public override string SpriteName(){
+		return("button_heal");
+	}
 }

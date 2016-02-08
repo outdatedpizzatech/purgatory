@@ -9,6 +9,14 @@ public class JobBlackMage : Job {
 		List<Type> list = new List<Type> ();
 		list.Add (typeof(AbilityAttack));
 		list.Add (typeof(AbilityFire));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
 		return(list);
 	}
 

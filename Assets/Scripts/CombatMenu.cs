@@ -19,6 +19,8 @@ public class CombatMenu : MonoBehaviour {
 	public List<GameObject> buttonList;
 	public bool giveItem;
 	private Button attackButton;
+	private Button abilityButton;
+	private Button itemButton;
 
 	// Use this for initialization
 	void Start () {
@@ -31,7 +33,11 @@ public class CombatMenu : MonoBehaviour {
 		itemActions.SetActive (false);
 		buttonList = new List<GameObject> ();
 		attackButton = transform.Find ("AttackButton").GetComponent<Button> ();
+		abilityButton = transform.Find ("AbilityButton").GetComponent<Button> ();
+		itemButton = transform.Find ("ItemButton").GetComponent<Button> ();
 		attackButton.gameObject.SetActive (false);
+		abilityButton.gameObject.SetActive (false);
+		itemButton.gameObject.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -47,6 +53,9 @@ public class CombatMenu : MonoBehaviour {
 
 	public static void Hide(){
 		instance.attackButton.gameObject.SetActive (false);
+		instance.abilityButton.gameObject.SetActive (false);
+		instance.itemButton.gameObject.SetActive (false);
+
 		instance.itemActions.SetActive (false);
 		instance.GetComponent<Canvas> ().enabled = false;
 		foreach(GameObject button in instance.buttons){
@@ -62,9 +71,35 @@ public class CombatMenu : MonoBehaviour {
 		BattleController.instance.combatMenuDisplayed = false;
 	}
 
+	public static void HideSubActions(){
+		print ("length: " + instance.buttons.Count);
+		foreach(GameObject button in instance.buttons){
+			if (button != null) {
+				Destroy (button);
+			}
+		}
+		foreach(GameObject item in instance.items){
+			if (item != null) {
+				item.transform.position = new Vector3 (9999, 9999, 0);
+			}
+		}
+	}
+
 	public void ShowActions(){
-		ClearButtonHighlights ();
+		attackButton.onClick.RemoveAllListeners ();
+
+		attackButton.onClick.AddListener (delegate {
+			SelectAbility (activePartyMember.abilityList[0]);
+		});
+
 		attackButton.gameObject.SetActive (true);
+		abilityButton.gameObject.SetActive (true);
+		itemButton.gameObject.SetActive (true);
+	}
+
+	public void ShowAbilities(){
+		HideSubActions ();
+		ClearButtonHighlights ();
 		backButton.SetActive (false);
 		itemActions.SetActive (false);
 		selectedItem = null;	
@@ -73,14 +108,22 @@ public class CombatMenu : MonoBehaviour {
 
 
 		int i = 0;
+		int xIncrement = 0;
 		foreach(Ability ability in activePartyMember.abilityList){
 			if (i != 0) {
-				Vector3 newPosition = transform.position;
-				newPosition.y += (i * 50);
+				if (xIncrement > 3)
+					xIncrement = 0;
+				print ("floor'd " + Mathf.Floor ((xIncrement) / 4));
+				float x = 55 + ((xIncrement) * 75);
+				float y = 225 + (Mathf.Floor((i-1)/4) * 75);
+				Vector3 newPosition = new Vector3(x, y, 0);
 				GameObject buttonObject = Instantiate (Resources.Load ("ActionButton"), newPosition, Quaternion.identity) as GameObject;
+				Sprite sprite = Resources.Load<Sprite>("Sprites/" + ability.SpriteName ());
+				buttonObject.GetComponent<ActionButton> ().sprite = sprite;
 				buttonObject.transform.parent = transform;
 				Button button = buttonObject.GetComponent<Button> ();
-				button.transform.Find ("Text").GetComponent<Text> ().text = ability.Name ();
+				button.transform.localScale = new Vector3 (1, 1, 1);
+//				button.transform.Find ("Text").GetComponent<Text> ().text = ability.Name ();
 
 				Ability capturedAbility = ability;
 
@@ -89,10 +132,27 @@ public class CombatMenu : MonoBehaviour {
 				});
 
 				buttons.Add (buttonObject);
+				xIncrement++;
 
 			}
 			i++;
 		}
+
+	}
+
+
+
+	public void ShowItems(){
+		HideSubActions ();
+		ClearButtonHighlights ();
+		backButton.SetActive (false);
+		itemActions.SetActive (false);
+		selectedItem = null;	
+		prompt.text = "";
+		transform.Find ("PartyMemberName").GetComponent<Text> ().text = activePartyMember.memberName;
+
+
+		int i = 0;
 
 		foreach(Item item in instance.activePartyMember.heldItems){
 			Vector3 newPosition = instance.transform.position;
@@ -123,11 +183,6 @@ public class CombatMenu : MonoBehaviour {
 			i++;
 		}
 
-		attackButton.onClick.RemoveAllListeners ();
-
-		attackButton.onClick.AddListener (delegate {
-			SelectAbility (activePartyMember.abilityList[0]);
-		});
 	}
 
 	public static void HighlightButton(GameObject buttonObject){
@@ -142,6 +197,7 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public void DoAttack(){
+		HideSubActions ();
 		SelectAbility (activePartyMember.abilityList [0]);
 	}
 
@@ -164,7 +220,7 @@ public class CombatMenu : MonoBehaviour {
 				item.transform.position = new Vector3 (9999, 9999, 0);
 			}
 		}
-		backButton.SetActive (true);
+//		backButton.SetActive (true);
 		itemActions.SetActive (false);
 		prompt.text = "select target";
 	}

@@ -16,4 +16,8 @@ public class AbilityFire : Ability {
 	public override string Name () {
 		return("Fire");
 	}
+
+	public override string SpriteName(){
+		return("button_fire");
+	}
 }

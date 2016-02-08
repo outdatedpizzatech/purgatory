@@ -8,6 +8,16 @@ public class JobWarrior : Job {
 	public override List<Type> Abilities(){
 		List<Type> list = new List<Type> ();
 		list.Add (typeof(AbilityAttack));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityFire));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityHeal));
 		return(list);
 	}
 

@@ -10,4 +10,8 @@ public class Ability {
 	public virtual string Name () {
 		return("NoName");
 	}
+
+	public virtual string SpriteName(){
+		return("");
+	}
 }
