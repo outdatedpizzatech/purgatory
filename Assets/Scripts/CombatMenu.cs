@@ -86,6 +86,10 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public void ShowActions(){
+		foreach(PartyMember partyMember in PartyMember.members){
+			partyMember.HideOverlay ();
+		}
+		activePartyMember.ShowOverlay ();
 		attackButton.onClick.RemoveAllListeners ();
 
 		attackButton.onClick.AddListener (delegate {
@@ -104,8 +108,6 @@ public class CombatMenu : MonoBehaviour {
 		itemActions.SetActive (false);
 		selectedItem = null;	
 		prompt.text = "";
-		transform.Find ("PartyMemberName").GetComponent<Text> ().text = activePartyMember.memberName;
-
 
 		int i = 0;
 		int xIncrement = 0;
@@ -149,8 +151,6 @@ public class CombatMenu : MonoBehaviour {
 		itemActions.SetActive (false);
 		selectedItem = null;	
 		prompt.text = "";
-		transform.Find ("PartyMemberName").GetComponent<Text> ().text = activePartyMember.memberName;
-
 
 		int i = 0;
 

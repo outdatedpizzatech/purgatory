@@ -24,6 +24,7 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public Item armor;
 	public Item accessory;
 	private Button button;
+	private GameObject overlay;
 
 	public void DisableClick(){
 		button.enabled = false;
@@ -33,6 +34,14 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		button.enabled = true;
 	}
 
+	public void ShowOverlay(){
+		overlay.SetActive (true);
+	}
+
+	public void HideOverlay(){
+		overlay.SetActive (false);
+	}
+
 	// Use this for initialization
 	void Start () {
 		button = GetComponent<Button> ();
@@ -40,6 +49,8 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		magic = maxMagic;
 		members.Add (this);
 		turnAvailable = true;
+		overlay = transform.Find ("Overlay").gameObject;
+		HideOverlay ();
 		SetJob ();
 		SetAbilities ();
 		SetLevelUps ();

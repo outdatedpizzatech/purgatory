@@ -11,7 +11,7 @@ public class JobBlackMage : Job {
 		list.Add (typeof(AbilityFire));
 		list.Add (typeof(AbilityHeal));
 		list.Add (typeof(AbilityHeal));
-		list.Add (typeof(AbilityHeal));
+		list.Add (typeof(AbilityFire));
 		list.Add (typeof(AbilityHeal));
 		list.Add (typeof(AbilityHeal));
 		list.Add (typeof(AbilityHeal));
