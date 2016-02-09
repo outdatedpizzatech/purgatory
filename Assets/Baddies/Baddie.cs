@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Baddie : MonoBehaviour, IAttackable {
 
 	public int health;
+	private Button button;
 
 	// Use this for initialization
 	void Start () {
 		health = 10;
+		button = GetComponent<Button> ();
 	}
 
 	public void DestroyMe(){
@@ -35,10 +38,19 @@ public class Baddie : MonoBehaviour, IAttackable {
 		return(health);
 	}
 
-	void OnMouseDown() {
+	public void DoClickAction() {
 		CombatMenu.SelectTarget (gameObject);
+
 	}
 
 	public virtual void DoAction(){
+	}
+
+	public void DisableClick(){
+		button.enabled = false;
+	}
+
+	public void EnableClick(){
+		button.enabled = true;
 	}
 }

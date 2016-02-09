@@ -192,7 +192,7 @@ public class CombatMenu : MonoBehaviour {
 		giveItem = false;
 		selectedAbility = ability;
 		foreach (GameObject enemy in RoomController.instance.enemies) {
-			enemy.GetComponent<Collider2D> ().enabled = true;
+			enemy.GetComponent<Baddie> ().EnableClick ();
 		}
 		foreach (PartyMember partyMember in PartyMember.members) {
 			partyMember.EnableClick ();
@@ -261,7 +261,7 @@ public class CombatMenu : MonoBehaviour {
 			BattleController.ExecuteAction (instance.selectedAbility, instance.activePartyMember, target);
 		}
 		foreach (GameObject enemy in RoomController.instance.enemies) {
-			enemy.GetComponent<Collider2D> ().enabled = false;
+			enemy.GetComponent<Baddie> ().DisableClick ();
 		}
 		foreach (PartyMember partyMember in PartyMember.members) {
 			partyMember.DisableClick ();
