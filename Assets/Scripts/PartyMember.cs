@@ -25,7 +25,7 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public Item accessory;
 	private Button button;
 	private GameObject overlay;
-	IDictionary<ItemTypes, Item> equipment = new Dictionary<ItemTypes, Item>();
+	public IDictionary<ItemTypes, Item> equipment = new Dictionary<ItemTypes, Item>();
 	private Image image;
 
 	public void DisableClick(){

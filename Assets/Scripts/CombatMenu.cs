@@ -84,6 +84,7 @@ public class CombatMenu : MonoBehaviour {
 		itemButton.gameObject.SetActive (true);
 		attackButton.gameObject.SetActive (true);
 		abilityButton.gameObject.SetActive (true);
+		ClearActionButtonHighlights();
 
 		foreach(PartyMember partyMember in PartyMember.members){
 			partyMember.HideOverlay ();
@@ -207,6 +208,38 @@ public class CombatMenu : MonoBehaviour {
 			i++;
 		}
 
+		ShowWeapon ();
+
+	}
+
+	public void ShowWeapon(){
+		Item capturedItem = instance.activePartyMember.equipment [ItemTypes.Weapon];
+
+		if (capturedItem != null) {
+
+			Vector3 newPosition = new Vector3 (130, 230 + (3 * 75), 0);
+
+
+			GameObject buttonObject = Instantiate (Resources.Load ("ActionButton"), newPosition, Quaternion.identity) as GameObject;
+			buttons.Add (buttonObject);
+			ActionButton actionButton = buttonObject.GetComponent<ActionButton> ();
+			actionButton.startText = "WEAPON";
+			actionButton.sprite = capturedItem.sprite;
+			buttonObject.transform.parent = transform;
+			Button button = buttonObject.GetComponent<Button> ();
+			button.transform.localScale = new Vector3 (1, 1, 1);
+
+			button.onClick.RemoveAllListeners ();
+
+			button.onClick.AddListener (delegate {
+				instance.SelectItem (capturedItem);
+			});
+
+			button.onClick.AddListener (delegate {
+				HighlightButton (actionButton);
+			});
+
+		}
 	}
 
 	public static void HighlightButton(ActionButton actionButton){
@@ -315,19 +348,24 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public static void GiveItem(GameObject target){
-		instance.itemActions.SetActive (false);
-
 		PartyMember targetMember = target.GetComponent<PartyMember> ();
-		instance.activePartyMember.RemoveItem (instance.selectedItem);
-		targetMember.AddItem (instance.selectedItem);
 
-		EventQueue.AddMessage ("handed it over");
+		if (targetMember.heldItems.Count < 2) {
+			instance.itemActions.SetActive (false);
 
-		instance.activePartyMember.turnAvailable = false;
+			instance.activePartyMember.RemoveItem (instance.selectedItem);
+			targetMember.AddItem (instance.selectedItem);
 
-		ClearButtonHighlights ();
+			EventQueue.AddMessage ("handed it over");
 
-		instance.buttons.Remove (instance.selectedItem.gameObject);
+			instance.activePartyMember.turnAvailable = false;
+
+			ClearButtonHighlights ();
+
+			instance.buttons.Remove (instance.selectedItem.gameObject);
+		} else {
+			EventQueue.AddMessage ("tried to hand over but failed");
+		}
 
 		Hide ();
 	}
