@@ -129,7 +129,6 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		if (GameController.inEncounter) {
 			CombatMenu.SelectTarget (gameObject);
 		} else if (GameController.inShopMenu) {
-			Select ();
 			ShopHUD.SelectPartyMember (gameObject);
 		}else {
 			Select ();

@@ -9,21 +9,23 @@ public class ShopHUD : MonoBehaviour {
 	public static PartyMember selectedPartyMember;
 	public static Item selectedItem;
 	public Vector3 buyButtonPosition;
-	public Text prompt;
 	public static List<GameObject> buttonList;
 	public static List<GameObject> itemList;
+	bool inTransaction = false;
+	GameObject buyButton;
+	GameObject cancelButton;
 
 
 	// Use this for initialization
 	void Start () {
 		instance = this;
 		selectedPartyMember = null;
-		buyButtonPosition = instance.transform.Find ("Buy").position;
-		prompt = transform.Find ("Prompt").GetComponent<Text>();
-		prompt.text = "";
-		instance.transform.Find ("Buy").position = new Vector3(9999, 9999, 0);
 		buttonList = new List<GameObject> ();
 		itemList = new List<GameObject> ();
+		buyButton = transform.Find ("Buy").gameObject;
+		cancelButton = transform.Find ("Cancel").gameObject;
+		buyButton.SetActive (false);
+		cancelButton.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -33,17 +35,19 @@ public class ShopHUD : MonoBehaviour {
 
 	public void Show(){
 		GameController.EnterShopMenu ();
-		prompt.text = "Select an item and a party member";
 
 		GameObject itemObject = Instantiate (Resources.Load ("Items/Potion"), new Vector3 (9999, 9999, 0), Quaternion.identity) as GameObject;
 		itemList.Add (itemObject);
+
+		itemObject = Instantiate (Resources.Load ("Items/Sword"), new Vector3 (9999, 9999, 0), Quaternion.identity) as GameObject;
+		itemList.Add (itemObject);
+
 		ShowItems ();
 	}
 
 	public void Close(){
 		GameController.ExitShopMenu ();
 		instance.transform.Find ("Buy").position = new Vector3(9999, 9999, 0);
-		prompt.text = "";
 
 		foreach (GameObject item in itemList) {
 			Destroy (item);
@@ -64,13 +68,14 @@ public class ShopHUD : MonoBehaviour {
 
 	public static void ShowItems(){
 		DestroyButtons ();
-		instance.prompt.text = "Select an item";
 		int i = 0;
 		foreach(GameObject item in itemList){
-			item.transform.parent = instance.transform;
-			item.transform.position = new Vector3(100 + (i * 70), 500, item.transform.position.z);
-			item.transform.localScale = new Vector3 (1f, 1f, 1);
-			Button button = item.GetComponent<Button>();
+			GameObject actionButton = Instantiate (Resources.Load ("ActionButton"), Vector3.zero, Quaternion.identity) as GameObject;
+			actionButton.transform.parent = instance.transform;
+			actionButton.transform.position = new Vector3(100 + (i * 70), 500, item.transform.position.z);
+			actionButton.transform.localScale = new Vector3 (1f, 1f, 1);
+			actionButton.GetComponent<ActionButton> ().sprite = item.GetComponent<Item> ().sprite;
+			Button button = actionButton.GetComponent<Button>();
 
 			Item capturedItem = item.GetComponent<Item>();
 
@@ -86,47 +91,63 @@ public class ShopHUD : MonoBehaviour {
 
 	public static void HighlightButton(GameObject buttonObject){
 		ClearButtonHighlights ();
-		buttonObject.transform.Find("Image").GetComponent<Image> ().color = Color.yellow;
+		buttonObject.GetComponent<ActionButton> ().Highlight ();
 	}
 
 	public static void ClearButtonHighlights(){
 		foreach(GameObject button in buttonList){
-			button.transform.Find("Image").GetComponent<Image> ().color = Color.white;
+			button.GetComponent<ActionButton> ().UnHighlight ();
 		}
 	}
 
 	public static void ConfirmBuy(Item item){
 		selectedItem = item;
 		ShowBuyButton ();
-		instance.prompt.text = selectedItem.Name() + ": " + selectedItem.Description() + ". Cost: " + selectedItem.Cost();
 	}
 
 	public static void SelectPartyMember(GameObject partyMember){
 		selectedPartyMember = partyMember.GetComponent<PartyMember> ();
-		ShowBuyButton ();
+
+		if (instance.inTransaction) {
+			GameObject newItem = Instantiate (selectedItem.gameObject);
+			newItem.transform.Find("Image").GetComponent<Image> ().color = Color.white;
+			Item item = selectedPartyMember.AddItem (newItem.GetComponent<Item>());
+			if (item != null) {
+				PartyMember.currency -= selectedItem.Cost ();
+				EventQueue.AddMessage ("Purchased " + selectedItem.Name ());
+				ClearButtonHighlights ();
+				selectedItem = null;
+				selectedPartyMember = null;
+				PartyMember.UnselectAll ();
+				instance.cancelButton.SetActive (false);
+				instance.inTransaction = false;
+			} else {
+				EventQueue.AddMessage ("can't carry any more!");
+			}
+		}
+
+
 	}
 
 	public static void ShowBuyButton(){
-		if(selectedItem != null && selectedPartyMember != null){
+		if(selectedItem != null){
 			if(selectedItem.Cost() <= PartyMember.currency){
-				instance.transform.Find ("Buy").position = instance.buyButtonPosition;
+				instance.buyButton.SetActive (true);
 			}else{
-				instance.transform.Find ("Buy").position = new Vector3(9999, 9999, 0);
+				instance.buyButton.SetActive (false);
 			}
 		}
 	}
 
+	public void Cancel(){
+		inTransaction = false;
+	}
+
 	public void Purchase(){
-		GameObject newItem = Instantiate (selectedItem.gameObject);
-		newItem.transform.Find("Image").GetComponent<Image> ().color = Color.white;
-		selectedPartyMember.heldItems.Add (newItem.GetComponent<Item>());
-		transform.Find ("Buy").position = new Vector3(9999, 9999, 0);
-		instance.prompt.text = "";
-		PartyMember.currency -= selectedItem.Cost();
-		EventQueue.AddMessage ("Purchased " + selectedItem.Name());
-		ClearButtonHighlights ();
-		selectedItem = null;
-		selectedPartyMember = null;
-		PartyMember.UnselectAll ();
+		EventQueue.AddMessage ("who will carry it?");
+		Prompt.SetText ("select a party member");
+		buyButton.SetActive (false);
+		cancelButton.SetActive (true);
+		inTransaction = true;
 	}
 }
