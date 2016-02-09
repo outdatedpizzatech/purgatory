@@ -34,6 +34,9 @@ public class ShopHUD : MonoBehaviour {
 	}
 
 	public void Show(){
+		buyButton.SetActive (false);
+		cancelButton.SetActive (false);
+		ObjectTooltip.Hide ();
 		GameController.EnterShopMenu ();
 
 		GameObject itemObject = Instantiate (Resources.Load ("Items/Potion"), new Vector3 (9999, 9999, 0), Quaternion.identity) as GameObject;
@@ -46,8 +49,8 @@ public class ShopHUD : MonoBehaviour {
 	}
 
 	public void Close(){
+		ObjectTooltip.Hide ();
 		GameController.ExitShopMenu ();
-		instance.transform.Find ("Buy").position = new Vector3(9999, 9999, 0);
 
 		foreach (GameObject item in itemList) {
 			Destroy (item);
@@ -55,6 +58,8 @@ public class ShopHUD : MonoBehaviour {
 
 		itemList.Clear ();
 		PartyMember.UnselectAll ();
+		inTransaction = false;
+		Prompt.Clear ();
 
 		DestroyButtons ();
 	}
@@ -90,8 +95,10 @@ public class ShopHUD : MonoBehaviour {
 	}
 
 	public static void HighlightButton(GameObject buttonObject){
-		ClearButtonHighlights ();
-		buttonObject.GetComponent<ActionButton> ().Highlight ();
+		if (!instance.inTransaction) {
+			ClearButtonHighlights ();
+			buttonObject.GetComponent<ActionButton> ().Highlight ();
+		}
 	}
 
 	public static void ClearButtonHighlights(){
@@ -101,8 +108,11 @@ public class ShopHUD : MonoBehaviour {
 	}
 
 	public static void ConfirmBuy(Item item){
-		selectedItem = item;
-		ShowBuyButton ();
+		if (!instance.inTransaction) {
+			selectedItem = item;
+			ObjectTooltip.Show (item);
+			ShowBuyButton ();
+		}
 	}
 
 	public static void SelectPartyMember(GameObject partyMember){
@@ -121,6 +131,7 @@ public class ShopHUD : MonoBehaviour {
 				PartyMember.UnselectAll ();
 				instance.cancelButton.SetActive (false);
 				instance.inTransaction = false;
+				ObjectTooltip.Hide ();
 			} else {
 				EventQueue.AddMessage ("can't carry any more!");
 			}

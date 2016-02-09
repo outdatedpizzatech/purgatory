@@ -18,7 +18,6 @@ public class CombatMenu : MonoBehaviour {
 	private Button attackButton;
 	private Button abilityButton;
 	private Button itemButton;
-	private GameObject objectTooltip;
 	private enum SelectionModes
 	{
 		ActionTarget,
@@ -29,8 +28,7 @@ public class CombatMenu : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		objectTooltip = transform.Find ("objectTooltip").gameObject;
-		objectTooltip.gameObject.SetActive (false);
+		ObjectTooltip.Hide ();
 		selectionMode = SelectionModes.None;
 		instance = this;
 		backButton = transform.Find ("Back").gameObject;
@@ -55,7 +53,7 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public static void Hide(){
-		instance.objectTooltip.gameObject.SetActive (false);
+		ObjectTooltip.Hide ();
 		instance.selectionMode = SelectionModes.None;
 		instance.attackButton.gameObject.SetActive (false);
 		instance.abilityButton.gameObject.SetActive (false);
@@ -90,7 +88,7 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public void ShowActions(){
-		objectTooltip.gameObject.SetActive (false);
+		ObjectTooltip.Hide ();
 		selectionMode = SelectionModes.None;
 		itemButton.gameObject.SetActive (true);
 		attackButton.gameObject.SetActive (true);
@@ -145,7 +143,7 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public void ShowAbilities(){
-		objectTooltip.gameObject.SetActive (false);
+		ObjectTooltip.Hide ();
 		selectionMode = SelectionModes.None;
 		HideSubActions ();
 		ClearButtonHighlights ();
@@ -185,7 +183,7 @@ public class CombatMenu : MonoBehaviour {
 
 
 	public void ShowItems(){
-		objectTooltip.gameObject.SetActive (false);
+		ObjectTooltip.Hide ();
 		selectionMode = SelectionModes.None;
 		HideSubActions ();
 		ClearButtonHighlights ();
@@ -290,10 +288,7 @@ public class CombatMenu : MonoBehaviour {
 				Destroy (button);
 			}
 		}
-		instance.objectTooltip.gameObject.SetActive (true);
-		instance.objectTooltip.transform.Find ("Icon").GetComponent<Image> ().sprite = Resources.Load <Sprite>("Sprites/" + selectedAbility.SpriteName ());
-		instance.objectTooltip.transform.Find ("Name").GetComponent<Text> ().text = selectedAbility.Name();
-		instance.objectTooltip.transform.Find ("Description").GetComponent<Text> ().text = selectedAbility.Description();
+		ObjectTooltip.Show (selectedAbility);
 		instance.buttons.Clear ();
 		Prompt.SetText ("Select a target");
 	}
@@ -311,10 +306,7 @@ public class CombatMenu : MonoBehaviour {
 			}
 		}
 
-		instance.objectTooltip.gameObject.SetActive (true);
-		instance.objectTooltip.transform.Find ("Icon").GetComponent<Image> ().sprite = selectedItem.sprite;
-		instance.objectTooltip.transform.Find ("Name").GetComponent<Text> ().text = selectedItem.Name();
-		instance.objectTooltip.transform.Find ("Description").GetComponent<Text> ().text = selectedItem.Description();
+		ObjectTooltip.Show (selectedItem);
 		instance.buttons.Clear ();
 		Prompt.SetText ("Select a target");
 	}
