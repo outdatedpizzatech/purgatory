@@ -26,4 +26,8 @@ public class Job {
 	public virtual List<LevelUpStruct> LevelUps(){
 		return(new List<LevelUpStruct>());
 	}
+
+	public virtual string SpriteName(){
+		return("");
+	}
 }

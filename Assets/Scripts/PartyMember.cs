@@ -26,6 +26,7 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	private Button button;
 	private GameObject overlay;
 	IDictionary<ItemTypes, Item> equipment = new Dictionary<ItemTypes, Item>();
+	private Image image;
 
 	public void DisableClick(){
 		button.enabled = false;
@@ -92,6 +93,8 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		equipment [ItemTypes.Armor] = null;
 		equipment [ItemTypes.Weapon] = null;
 		equipment [ItemTypes.Accessory] = null;
+		image = transform.Find ("Image").GetComponent<Image> ();
+		image.sprite = Resources.Load<Sprite> ("Sprites/job_" + job.SpriteName());
 	}
 
 	void SetLevelUps(){

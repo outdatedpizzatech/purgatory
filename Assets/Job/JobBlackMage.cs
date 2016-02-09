@@ -23,4 +23,8 @@ public class JobBlackMage : Job {
 	public override string Name(){
 		return("Black Mage");
 	}
+
+	public override string SpriteName(){
+		return("black_mage");
+	}
 }

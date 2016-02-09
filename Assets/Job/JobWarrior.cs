@@ -44,4 +44,8 @@ public class JobWarrior : Job {
 	public void LevelUpStatsII(PartyMember partyMember){
 		partyMember.strength += 20;
 	}
+
+	public override string SpriteName(){
+		return("warrior");
+	}
 }
