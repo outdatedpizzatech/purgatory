@@ -35,10 +35,6 @@ public class ShopHUD : MonoBehaviour {
 		GameController.EnterShopMenu ();
 		prompt.text = "Select an item and a party member";
 
-		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.EnableClick ();
-		}
-
 		GameObject itemObject = Instantiate (Resources.Load ("Items/Potion"), new Vector3 (9999, 9999, 0), Quaternion.identity) as GameObject;
 		itemList.Add (itemObject);
 		ShowItems ();
@@ -48,9 +44,6 @@ public class ShopHUD : MonoBehaviour {
 		GameController.ExitShopMenu ();
 		instance.transform.Find ("Buy").position = new Vector3(9999, 9999, 0);
 		prompt.text = "";
-		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.DisableClick ();
-		}
 
 		foreach (GameObject item in itemList) {
 			Destroy (item);

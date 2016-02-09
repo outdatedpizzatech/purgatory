@@ -28,14 +28,6 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public IDictionary<ItemTypes, Item> equipment = new Dictionary<ItemTypes, Item>();
 	private Image image;
 
-	public void DisableClick(){
-		button.enabled = false;
-	}
-
-	public void EnableClick(){
-		button.enabled = true;
-	}
-
 	public void ShowOverlay(){
 		overlay.SetActive (true);
 	}

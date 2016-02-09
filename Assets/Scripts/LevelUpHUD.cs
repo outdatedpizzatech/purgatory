@@ -35,10 +35,6 @@ public class LevelUpHUD : MonoBehaviour {
 	public void Show(){
 		GameController.EnterLevelUpMenu ();
 		prompt.text = "Select a party member";
-
-		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.EnableClick ();
-		}
 	}
 
 	public void Close(){
@@ -46,9 +42,6 @@ public class LevelUpHUD : MonoBehaviour {
 		PartyMember.UnselectAll ();
 		instance.transform.Find ("ConfirmLevelUp").position = new Vector3(9999, 9999, 0);
 		prompt.text = "";
-		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.DisableClick ();
-		}
 
 		DestroyButtons ();
 	}
