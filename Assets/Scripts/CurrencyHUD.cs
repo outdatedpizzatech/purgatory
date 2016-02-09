@@ -14,6 +14,6 @@ public class CurrencyHUD : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		text.text = "Currency " + PartyMember.currency.ToString ();
+		text.text = "$" + PartyMember.currency.ToString ();
 	}
 }

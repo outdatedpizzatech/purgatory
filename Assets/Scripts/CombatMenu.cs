@@ -30,9 +30,9 @@ public class CombatMenu : MonoBehaviour {
 		attackButton = transform.Find ("AttackButton").GetComponent<Button> ();
 		abilityButton = transform.Find ("AbilityButton").GetComponent<Button> ();
 		itemButton = transform.Find ("ItemButton").GetComponent<Button> ();
-		attackButton.gameObject.SetActive (false);
-		abilityButton.gameObject.SetActive (false);
-		itemButton.gameObject.SetActive (false);
+//		attackButton.gameObject.SetActive (false);
+//		abilityButton.gameObject.SetActive (false);
+//		itemButton.gameObject.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -47,6 +47,7 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public static void Hide(){
+		print ("hiding");
 		instance.attackButton.gameObject.SetActive (false);
 		instance.abilityButton.gameObject.SetActive (false);
 		instance.itemButton.gameObject.SetActive (false);
@@ -80,19 +81,55 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public void ShowActions(){
+		itemButton.gameObject.SetActive (true);
+		attackButton.gameObject.SetActive (true);
+		abilityButton.gameObject.SetActive (true);
+
 		foreach(PartyMember partyMember in PartyMember.members){
 			partyMember.HideOverlay ();
 		}
+
 		activePartyMember.ShowOverlay ();
+
 		attackButton.onClick.RemoveAllListeners ();
+		abilityButton.onClick.RemoveAllListeners ();
+		itemButton.onClick.RemoveAllListeners ();
+
+		itemButton.onClick.AddListener (delegate {
+			ClearActionButtonHighlights();
+		});
+
+		attackButton.onClick.AddListener (delegate {
+			ClearActionButtonHighlights();
+		});
+
+		abilityButton.onClick.AddListener (delegate {
+			ClearActionButtonHighlights();
+		});
+
+		attackButton.onClick.AddListener (delegate {
+			HighlightButton (attackButton.GetComponent<ActionButton>());
+		});
+
+		abilityButton.onClick.AddListener (delegate {
+			HighlightButton (abilityButton.GetComponent<ActionButton>());
+		});
+
+		itemButton.onClick.AddListener (delegate {
+			HighlightButton (itemButton.GetComponent<ActionButton>());
+		});
 
 		attackButton.onClick.AddListener (delegate {
 			SelectAbility (activePartyMember.abilityList[0]);
 		});
 
-		attackButton.gameObject.SetActive (true);
-		abilityButton.gameObject.SetActive (true);
-		itemButton.gameObject.SetActive (true);
+		abilityButton.onClick.AddListener (delegate {
+			this.ShowAbilities();
+		});
+
+		itemButton.onClick.AddListener (delegate {
+			this.ShowItems();
+		});
 	}
 
 	public void ShowAbilities(){
@@ -178,9 +215,17 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public static void ClearButtonHighlights(){
+		print ("buttonCount: " + instance.buttons.Count);
 		foreach(GameObject button in instance.buttons){
 			button.GetComponent<ActionButton> ().UnHighlight ();
 		}
+	}
+
+
+	public static void ClearActionButtonHighlights(){
+		instance.attackButton.GetComponent<ActionButton> ().UnHighlight ();
+		instance.abilityButton.GetComponent<ActionButton> ().UnHighlight ();
+		instance.itemButton.GetComponent<ActionButton> ().UnHighlight ();
 	}
 
 	public void DoAttack(){

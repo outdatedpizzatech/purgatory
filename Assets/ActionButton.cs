@@ -12,6 +12,7 @@ public class ActionButton : MonoBehaviour {
 	void Start () {
 		front = transform.Find ("Front").GetComponent<Image> ();
 		back = transform.Find ("Back").GetComponent<Image> ();
+		print ("back: " + back);
 		front.sprite = sprite;
 		UnHighlight();
 	}
@@ -26,6 +27,6 @@ public class ActionButton : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		print (back);
 	}
 }
