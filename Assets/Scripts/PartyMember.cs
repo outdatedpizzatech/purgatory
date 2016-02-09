@@ -52,7 +52,9 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	}
 
 	public void RemoveItem(Item itemToRemove){
-		itemToRemove.owner = null;
+		if (itemToRemove.owner == this) {
+			itemToRemove.owner = null;
+		}
 		heldItems.Remove (itemToRemove);
 	}
 

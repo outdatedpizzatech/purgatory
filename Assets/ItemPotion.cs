@@ -10,15 +10,32 @@ public class ItemPotion : Item {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
-	public override void Use(){
-		EventQueue.AddMessage (owner.memberName + " drank a potion");
-		EventQueue.AddEvent (owner.gameObject, -20, DamageTypes.Physical);
-		owner.turnAvailable = false;
-		owner.RemoveItem (this);
-		Destroy (gameObject);
+	public override bool Use(PartyMember originator, GameObject target) {
+		bool success = false;
+		if (originator.gameObject == target) {
+			EventQueue.AddMessage (originator.memberName + " drank a potion");
+			EventQueue.AddEvent (target.gameObject, -20, DamageTypes.Physical);
+			owner.turnAvailable = false;
+			owner.RemoveItem (this);
+			Destroy (gameObject);
+			success = true;
+		} else if (target.GetComponent<Baddie> ()) {
+			EventQueue.AddMessage ("there's no need to do that");
+		} else if (target.GetComponent<PartyMember>()){
+			Item addedItem = target.GetComponent<PartyMember> ().AddItem (this);
+			if (addedItem != null) {
+				originator.RemoveItem (this);
+				originator.turnAvailable = false;
+				EventQueue.AddMessage ("handed it over");
+				success = true;
+			} else {
+				EventQueue.AddMessage ("tried to give but failed");
+			}
+		}
+		return(success);
 	}
 
 	public override string Name(){

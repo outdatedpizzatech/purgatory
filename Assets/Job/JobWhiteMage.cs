@@ -29,4 +29,5 @@ public class JobWhiteMage : Job {
 	public override string SpriteName(){
 		return("white_mage");
 	}
+
 }

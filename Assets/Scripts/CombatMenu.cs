@@ -14,35 +14,33 @@ public class CombatMenu : MonoBehaviour {
 	public PartyMember activePartyMember;
 	public GameObject backButton;
 	public Item selectedItem;
-	public GameObject itemActions;
 	public bool giveItem;
 	private Button attackButton;
 	private Button abilityButton;
 	private Button itemButton;
-	private ActionButton giveButton;
+	private GameObject abilityTooltip;
 	private enum SelectionModes
 	{
-		GiveItem,
 		ActionTarget,
+		ItemTarget,
 		None
 	}
 	private SelectionModes selectionMode;
 
 	// Use this for initialization
 	void Start () {
-		giveButton = transform.Find ("ItemActions/GiveButton").GetComponent<ActionButton>();
+		abilityTooltip = transform.Find ("AbilityTooltip").gameObject;
+		abilityTooltip.gameObject.SetActive (false);
 		selectionMode = SelectionModes.None;
 		instance = this;
 		backButton = transform.Find ("Back").gameObject;
 		backButton.SetActive (false);
-		itemActions = transform.Find ("ItemActions").gameObject;
-		itemActions.SetActive (false);
 		attackButton = transform.Find ("AttackButton").GetComponent<Button> ();
 		abilityButton = transform.Find ("AbilityButton").GetComponent<Button> ();
 		itemButton = transform.Find ("ItemButton").GetComponent<Button> ();
-//		attackButton.gameObject.SetActive (false);
-//		abilityButton.gameObject.SetActive (false);
-//		itemButton.gameObject.SetActive (false);
+		attackButton.gameObject.SetActive (false);
+		abilityButton.gameObject.SetActive (false);
+		itemButton.gameObject.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -57,13 +55,12 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public static void Hide(){
+		instance.abilityTooltip.gameObject.SetActive (false);
 		instance.selectionMode = SelectionModes.None;
-		print ("hiding");
 		instance.attackButton.gameObject.SetActive (false);
 		instance.abilityButton.gameObject.SetActive (false);
 		instance.itemButton.gameObject.SetActive (false);
 
-		instance.itemActions.SetActive (false);
 		instance.GetComponent<Canvas> ().enabled = false;
 		foreach(GameObject button in instance.buttons){
 			if (button != null) {
@@ -93,6 +90,7 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public void ShowActions(){
+		abilityTooltip.gameObject.SetActive (false);
 		selectionMode = SelectionModes.None;
 		itemButton.gameObject.SetActive (true);
 		attackButton.gameObject.SetActive (true);
@@ -147,11 +145,10 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public void ShowAbilities(){
+		abilityTooltip.gameObject.SetActive (false);
 		selectionMode = SelectionModes.None;
 		HideSubActions ();
 		ClearButtonHighlights ();
-		backButton.SetActive (false);
-		itemActions.SetActive (false);
 		selectedItem = null;	
 		Prompt.SetText ("Select an ability");
 
@@ -188,11 +185,11 @@ public class CombatMenu : MonoBehaviour {
 
 
 	public void ShowItems(){
+		abilityTooltip.gameObject.SetActive (false);
 		selectionMode = SelectionModes.None;
 		HideSubActions ();
 		ClearButtonHighlights ();
 		backButton.SetActive (false);
-		itemActions.SetActive (false);
 		selectedItem = null;	
 		Prompt.SetText ("Select an item");
 
@@ -293,52 +290,43 @@ public class CombatMenu : MonoBehaviour {
 				Destroy (button);
 			}
 		}
-		foreach(GameObject item in instance.items){
-			if (item != null) {
-				item.transform.position = new Vector3 (9999, 9999, 0);
-			}
-		}
+		instance.abilityTooltip.gameObject.SetActive (true);
+		instance.abilityTooltip.transform.Find ("Icon").GetComponent<Image> ().sprite = Resources.Load <Sprite>("Sprites/" + selectedAbility.SpriteName ());
+		instance.abilityTooltip.transform.Find ("Name").GetComponent<Text> ().text = selectedAbility.Name();
+		instance.abilityTooltip.transform.Find ("Description").GetComponent<Text> ().text = selectedAbility.Description();
 		instance.buttons.Clear ();
-//		backButton.SetActive (true);
-		itemActions.SetActive (false);
 		Prompt.SetText ("Select a target");
 	}
 
 	public void SelectItem(GameObject buttonObject, Item item){
-		giveButton.UnHighlight ();
-		selectionMode = SelectionModes.None;
-		Prompt.SetText("Select an item action");
+		selectionMode = SelectionModes.ItemTarget;
 		selectedItem = item;
-		itemActions.SetActive (true);
-		Vector3 newPosition = buttonObject.transform.position;
-		newPosition.x += 150;
-		itemActions.transform.position = newPosition;
-	}
 
-	public void UseItem(){
-		selectionMode = SelectionModes.None;
+		foreach (GameObject enemy in RoomController.instance.enemies) {
+			enemy.GetComponent<Baddie> ().EnableClick ();
+		}
+		foreach(GameObject button in instance.buttons){
+			if (button != null) {
+				Destroy (button);
+			}
+		}
 
-		buttons.Remove (selectedItem.gameObject);
-		selectedItem.Use ();
-		itemActions.SetActive (false);
-
-		Hide ();
-	}
-
-	public void SelectGiveItem(){
-		selectionMode = SelectionModes.GiveItem;
-
-		Prompt.SetText("Select a party member");
+		instance.abilityTooltip.gameObject.SetActive (true);
+		instance.abilityTooltip.transform.Find ("Icon").GetComponent<Image> ().sprite = selectedItem.sprite;
+		instance.abilityTooltip.transform.Find ("Name").GetComponent<Text> ().text = selectedItem.Name();
+		instance.abilityTooltip.transform.Find ("Description").GetComponent<Text> ().text = selectedItem.Description();
+		instance.buttons.Clear ();
+		Prompt.SetText ("Select a target");
 	}
 
 	public static void SelectTarget(GameObject target){
 		instance.backButton.SetActive (false);
 		Prompt.Clear();
 
-		if (instance.selectionMode == SelectionModes.GiveItem) {
-			GiveItem (target);
-		} else if (instance.selectionMode == SelectionModes.ActionTarget) {
+		if (instance.selectionMode == SelectionModes.ActionTarget) {
 			BattleController.ExecuteAction (instance.selectedAbility, instance.activePartyMember, target);
+		}else if (instance.selectionMode == SelectionModes.ItemTarget) {
+			BattleController.ExecuteAction (instance.selectedItem, instance.activePartyMember, target);
 		}
 		foreach (GameObject enemy in RoomController.instance.enemies) {
 			enemy.GetComponent<Baddie> ().DisableClick ();
@@ -346,37 +334,4 @@ public class CombatMenu : MonoBehaviour {
 		Hide ();
 	}
 
-	public static void GiveItem(GameObject target){
-		PartyMember targetMember = target.GetComponent<PartyMember> ();
-
-		if (targetMember.heldItems.Count < 2) {
-			instance.selectionMode = SelectionModes.None;
-
-			instance.itemActions.SetActive (false);
-
-			instance.activePartyMember.RemoveItem (instance.selectedItem);
-			targetMember.AddItem (instance.selectedItem);
-
-			EventQueue.AddMessage ("handed it over");
-
-			instance.activePartyMember.turnAvailable = false;
-
-			ClearButtonHighlights ();
-
-			instance.buttons.Remove (instance.selectedItem.gameObject);
-
-			foreach(GameObject button in instance.buttons){
-				if (button != null) {
-					Destroy (button);
-				}
-			}
-			instance.buttons.Clear();
-
-			Hide ();
-
-		} else {
-			EventQueue.AddMessage ("tried to hand over but failed");
-		}
-
-	}
 }

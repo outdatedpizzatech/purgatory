@@ -20,7 +20,8 @@ public class Item : MonoBehaviour {
 		return(ItemTypes.Consumable);
 	}
 
-	public virtual void Use(){
+	public virtual bool Use(PartyMember originator, GameObject target) {
+		return(false);
 	}
 
 	public virtual string Name(){

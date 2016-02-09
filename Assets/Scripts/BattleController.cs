@@ -65,4 +65,9 @@ public class BattleController : MonoBehaviour {
 		partyMember.turnAvailable = false;
 	}
 
+	public static void ExecuteAction(Item item, PartyMember partyMember, GameObject target){
+		bool success = item.Use(partyMember, target);
+		if(success) partyMember.turnAvailable = false;
+	}
+
 }

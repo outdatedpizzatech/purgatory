@@ -17,10 +17,27 @@ public class ItemSword : Item {
 		return(ItemTypes.Weapon);
 	}
 
-	public override void Use(){
-		EventQueue.AddMessage (owner.memberName + " equipped sword");
-		owner.turnAvailable = false;
-		owner.Equip (this);
+	public override bool Use(PartyMember originator, GameObject target) {
+		bool success = false;
+		if (originator.gameObject == target) {
+			EventQueue.AddMessage (owner.memberName + " equipped sword");
+			originator.turnAvailable = false;
+			owner.Equip (this);
+			success = true;
+		} else if (target.GetComponent<Baddie> ()) {
+			EventQueue.AddMessage ("there's no need to do that");
+		} else if (target.GetComponent<PartyMember>()){
+			Item addedItem = target.GetComponent<PartyMember> ().AddItem (this);
+			if (addedItem != null) {
+				originator.RemoveItem (this);
+				originator.turnAvailable = false;
+				EventQueue.AddMessage ("handed it over");
+				success = true;
+			} else {
+				EventQueue.AddMessage ("tried to give but failed");
+			}
+		}
+		return(success);
 	}
 
 	public override string Name(){

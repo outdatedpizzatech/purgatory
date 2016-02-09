@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Ability {
 
-	public virtual void Perform (PartyMember originator, GameObject target) {
-		
+	public virtual bool Perform (PartyMember originator, GameObject target) {
+		return(false);
 	}
 
 	public virtual string Name () {
@@ -13,5 +13,9 @@ public class Ability {
 
 	public virtual string SpriteName(){
 		return("");
+	}
+
+	public virtual string Description(){
+		return("NoDescription");
 	}
 }
