@@ -18,9 +18,9 @@ public class ItemSword : Item {
 	}
 
 	public override void Use(){
-		owner.Equip (this);
-		owner.turnAvailable = false;
 		EventQueue.AddMessage (owner.memberName + " equipped sword");
+		owner.turnAvailable = false;
+		owner.Equip (this);
 	}
 
 	public override string Name(){

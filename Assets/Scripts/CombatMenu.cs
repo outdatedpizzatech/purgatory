@@ -63,6 +63,7 @@ public class CombatMenu : MonoBehaviour {
 				item.transform.position = new Vector3 (9999, 9999, 0);
 			}
 		}
+		instance.buttons.Clear ();
 		BattleController.instance.combatMenuDisplayed = false;
 	}
 
@@ -75,6 +76,7 @@ public class CombatMenu : MonoBehaviour {
 				Destroy (button);
 			}
 		}
+		instance.buttons.Clear ();
 	}
 
 	public void ShowActions(){
@@ -205,6 +207,7 @@ public class CombatMenu : MonoBehaviour {
 				item.transform.position = new Vector3 (9999, 9999, 0);
 			}
 		}
+		instance.buttons.Clear ();
 //		backButton.SetActive (true);
 		itemActions.SetActive (false);
 		Prompt.SetText ("Select a target");
@@ -240,6 +243,8 @@ public class CombatMenu : MonoBehaviour {
 		}
 		backButton.SetActive (true);
 		itemActions.SetActive (false);
+		instance.buttons.Clear();
+
 		Prompt.SetText("Select a party member");
 
 //		Hide ();
@@ -268,9 +273,8 @@ public class CombatMenu : MonoBehaviour {
 		instance.itemActions.SetActive (false);
 
 		PartyMember targetMember = target.GetComponent<PartyMember> ();
-		targetMember.heldItems.Add (instance.selectedItem);
-		instance.activePartyMember.heldItems.Add (instance.selectedItem);
-		instance.selectedItem.owner = targetMember;
+		instance.activePartyMember.RemoveItem (instance.selectedItem);
+		targetMember.AddItem (instance.selectedItem);
 
 		EventQueue.AddMessage ("handed it over");
 

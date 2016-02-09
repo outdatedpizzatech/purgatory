@@ -44,9 +44,14 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	}
 
 	public Item AddItem(GameObject itemToAdd){
+		Item item = itemToAdd.GetComponent<Item> ();
+		return(AddItem(item));
+	}
+
+	public Item AddItem(Item itemToAdd){
 		Item item = null;
 		if(heldItems.Count < 2){
-			item = itemToAdd.GetComponent<Item> ();
+			item = itemToAdd;
 			item.owner = this;
 			heldItems.Add (item);
 		}
@@ -123,7 +128,6 @@ public class PartyMember : MonoBehaviour, IAttackable {
 
 
 	public void DoClickAction() {
-		print ("ya clicked me!");
 		UnselectAll ();
 		if (GameController.inEncounter) {
 			CombatMenu.SelectTarget (gameObject);
