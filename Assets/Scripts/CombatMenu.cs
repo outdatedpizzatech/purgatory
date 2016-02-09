@@ -15,7 +15,6 @@ public class CombatMenu : MonoBehaviour {
 	public GameObject backButton;
 	public Item selectedItem;
 	public GameObject itemActions;
-	public List<GameObject> buttonList;
 	public bool giveItem;
 	private Button attackButton;
 	private Button abilityButton;
@@ -23,13 +22,11 @@ public class CombatMenu : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		print ("initializing");
 		instance = this;
 		backButton = transform.Find ("Back").gameObject;
 		backButton.SetActive (false);
 		itemActions = transform.Find ("ItemActions").gameObject;
 		itemActions.SetActive (false);
-		buttonList = new List<GameObject> ();
 		attackButton = transform.Find ("AttackButton").GetComponent<Button> ();
 		abilityButton = transform.Find ("AbilityButton").GetComponent<Button> ();
 		itemButton = transform.Find ("ItemButton").GetComponent<Button> ();
@@ -50,7 +47,6 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public static void Hide(){
-		print ("hiding");
 		instance.attackButton.gameObject.SetActive (false);
 		instance.abilityButton.gameObject.SetActive (false);
 		instance.itemButton.gameObject.SetActive (false);
@@ -71,15 +67,12 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public static void HideSubActions(){
-		print ("length: " + instance.buttons.Count);
+		print ("clearing buttons!");
 		foreach(GameObject button in instance.buttons){
+			print ("button iteration");
 			if (button != null) {
+				print ("clear");
 				Destroy (button);
-			}
-		}
-		foreach(GameObject item in instance.items){
-			if (item != null) {
-				item.transform.position = new Vector3 (9999, 9999, 0);
 			}
 		}
 	}
@@ -114,7 +107,6 @@ public class CombatMenu : MonoBehaviour {
 			if (i != 0) {
 				if (xIncrement > 3)
 					xIncrement = 0;
-				print ("floor'd " + Mathf.Floor ((xIncrement) / 4));
 				float x = 55 + ((xIncrement) * 75);
 				float y = 225 + (Mathf.Floor((i-1)/4) * 75);
 				Vector3 newPosition = new Vector3(x, y, 0);
@@ -124,8 +116,6 @@ public class CombatMenu : MonoBehaviour {
 				buttonObject.transform.parent = transform;
 				Button button = buttonObject.GetComponent<Button> ();
 				button.transform.localScale = new Vector3 (1, 1, 1);
-//				button.transform.Find ("Text").GetComponent<Text> ().text = ability.Name ();
-
 				Ability capturedAbility = ability;
 
 				button.onClick.AddListener (delegate {
@@ -154,42 +144,40 @@ public class CombatMenu : MonoBehaviour {
 		int i = 0;
 
 		foreach(Item item in instance.activePartyMember.heldItems){
-			Vector3 newPosition = instance.transform.position;
-			newPosition.y += (i * 50);
-			item.transform.parent = instance.transform;
-			item.transform.position = newPosition;
-			Button button = item.GetComponent<Button>();
+			Vector3 newPosition = new Vector3 (130, 230 + (i * 75), 0);
 
 			Item capturedItem = item;
+
+			GameObject buttonObject = Instantiate (Resources.Load ("ActionButton"), newPosition, Quaternion.identity) as GameObject;
+			buttons.Add (buttonObject);
+			ActionButton actionButton = buttonObject.GetComponent<ActionButton> ();
+			actionButton.sprite = capturedItem.sprite;
+			buttonObject.transform.parent = transform;
+			Button button = buttonObject.GetComponent<Button> ();
+			button.transform.localScale = new Vector3 (1, 1, 1);
 
 			button.onClick.RemoveAllListeners ();
 
 			button.onClick.AddListener( delegate {
 				instance.SelectItem(capturedItem); } );
 
-
 			button.onClick.AddListener( delegate {
-				HighlightButton(button.gameObject); } );
+				HighlightButton(actionButton); } );
 
-			instance.items.Add (item.gameObject);
-
-			item.transform.parent = GameObject.Find ("CombatMenu").transform;
-
-			buttonList.Add (button.gameObject);
 
 			i++;
 		}
 
 	}
 
-	public static void HighlightButton(GameObject buttonObject){
+	public static void HighlightButton(ActionButton actionButton){
 		ClearButtonHighlights ();
-		buttonObject.transform.Find("Image").GetComponent<Image> ().color = Color.yellow;
+		actionButton.Highlight ();
 	}
 
 	public static void ClearButtonHighlights(){
-		foreach(GameObject button in instance.buttonList){
-			button.transform.Find("Image").GetComponent<Image> ().color = Color.white;
+		foreach(GameObject button in instance.buttons){
+			button.GetComponent<ActionButton> ().UnHighlight ();
 		}
 	}
 
@@ -228,7 +216,7 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public void UseItem(){
-		buttonList.Remove (selectedItem.gameObject);
+		buttons.Remove (selectedItem.gameObject);
 		selectedItem.Use ();
 		itemActions.SetActive (false);
 
@@ -236,7 +224,6 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public void SelectGiveItem(){
-		print ("why u no select?");
 		giveItem = true;
 		foreach (PartyMember partyMember in PartyMember.members) {
 			if(activePartyMember != partyMember) partyMember.EnableClick();
@@ -291,7 +278,7 @@ public class CombatMenu : MonoBehaviour {
 
 		ClearButtonHighlights ();
 
-		instance.buttonList.Remove (instance.selectedItem.gameObject);
+		instance.buttons.Remove (instance.selectedItem.gameObject);
 
 		Hide ();
 	}

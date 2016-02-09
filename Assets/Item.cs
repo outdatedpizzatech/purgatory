@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Item : MonoBehaviour {
 
 	public PartyMember owner;
+	public Sprite sprite;
 
 	// Use this for initialization
 	void Start () {
