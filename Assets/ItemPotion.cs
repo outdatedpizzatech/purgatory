@@ -14,7 +14,7 @@ public class ItemPotion : Item {
 	}
 
 	public override void Use(){
-		owner.heldItems.Remove (this);
+		owner.RemoveItem (this);
 		owner.turnAvailable = false;
 		EventQueue.AddMessage (owner.memberName + " drank a potion");
 		EventQueue.AddEvent (owner.gameObject, -20, DamageTypes.Physical);

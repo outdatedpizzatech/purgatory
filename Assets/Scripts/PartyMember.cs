@@ -25,6 +25,7 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public Item accessory;
 	private Button button;
 	private GameObject overlay;
+	IDictionary<ItemTypes, Item> equipment = new Dictionary<ItemTypes, Item>();
 
 	public void DisableClick(){
 		button.enabled = false;
@@ -42,6 +43,31 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		overlay.SetActive (false);
 	}
 
+	public Item AddItem(GameObject itemToAdd){
+		Item item = null;
+		if(heldItems.Count < 2){
+			item = itemToAdd.GetComponent<Item> ();
+			item.owner = this;
+			heldItems.Add (item);
+		}
+		return(item);
+	}
+
+	public void RemoveItem(Item itemToRemove){
+		itemToRemove.owner = null;
+		heldItems.Remove (itemToRemove);
+	}
+
+	public void Equip(Item itemToEquip){
+		ItemTypes itemType = itemToEquip.ItemType ();
+		Item equippedItem = equipment [itemType];
+		if (equippedItem != null) {
+			heldItems.Add (equipment [itemType]);
+		}
+		heldItems.Remove (itemToEquip);
+		equipment [itemType] = itemToEquip;
+	}
+
 	// Use this for initialization
 	void Start () {
 		button = GetComponent<Button> ();
@@ -55,13 +81,12 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		SetAbilities ();
 		SetLevelUps ();
 		currency = 500;
-		GameObject potion = Instantiate (Resources.Load ("Items/Potion"), transform.position, Quaternion.identity) as GameObject;
-		heldItems.Add (potion.GetComponent<Item> ());
-		potion.GetComponent<Item> ().owner = this;
-		GameObject sword = Instantiate (Resources.Load ("Items/Sword"), transform.position, Quaternion.identity) as GameObject;
-		heldItems.Add (sword.GetComponent<Item> ());
-		sword.GetComponent<Item> ().owner = this;
+		AddItem(Instantiate (Resources.Load ("Items/Potion"), transform.position, Quaternion.identity) as GameObject);
+		AddItem(Instantiate (Resources.Load ("Items/Sword"), transform.position, Quaternion.identity) as GameObject);
 		Unselect ();
+		equipment [ItemTypes.Armor] = null;
+		equipment [ItemTypes.Weapon] = null;
+		equipment [ItemTypes.Accessory] = null;
 	}
 
 	void SetLevelUps(){

@@ -18,9 +18,7 @@ public class ItemSword : Item {
 	}
 
 	public override void Use(){
-		owner.heldItems.Remove (this);
-		if(owner.weapon != null) owner.heldItems.Add (owner.weapon);
-		owner.weapon = this;
+		owner.Equip (this);
 		owner.turnAvailable = false;
 		EventQueue.AddMessage (owner.memberName + " equipped sword");
 	}

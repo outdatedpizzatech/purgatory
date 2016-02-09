@@ -175,8 +175,6 @@ public class CombatMenu : MonoBehaviour {
 
 			item.transform.parent = GameObject.Find ("CombatMenu").transform;
 
-			instance.transform.Find ("PartyMemberName").GetComponent<Text> ().text = instance.activePartyMember.memberName;
-
 			buttonList.Add (button.gameObject);
 
 			i++;
