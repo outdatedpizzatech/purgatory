@@ -37,11 +37,12 @@ public class RoomController : MonoBehaviour {
 				if (i % 2 == 0) negFactor = -1;
 				float xPosition;
 				if (this.enemies.Count % 2 == 0) {
-					xPosition = Mathf.CeilToInt ((float)(i + 1) / 2) * negFactor * 1.5f;
+					xPosition = Mathf.CeilToInt ((float)(i + 1) / 2) * negFactor * 50f;
 				} else {
-					xPosition = Mathf.CeilToInt ((float)i / 2) * negFactor * 1.5f;
+					xPosition = Mathf.CeilToInt ((float)i / 2) * negFactor * 50f;
 				}
-				enemy.transform.position = new Vector3(xPosition, -3, 0);
+				xPosition += 100;
+				enemy.transform.position = new Vector3(xPosition, 400, 0);
 				i++;
 			}
 
@@ -58,6 +59,7 @@ public class RoomController : MonoBehaviour {
 			enemyObject = Instantiate (Resources.Load ("Baddies/Frog"), Vector3.zero, Quaternion.identity) as GameObject;
 		}
 		enemies.Add (enemyObject);
+		enemyObject.transform.parent = GameObject.Find ("BaddiesHUD").transform;
 	}
 
 

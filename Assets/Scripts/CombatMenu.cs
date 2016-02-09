@@ -12,7 +12,6 @@ public class CombatMenu : MonoBehaviour {
 	public List<GameObject> buttons = new List<GameObject>();
 	public List<GameObject> items = new List<GameObject>();
 	public PartyMember activePartyMember;
-	public Text prompt;
 	public GameObject backButton;
 	public Item selectedItem;
 	public GameObject itemActions;
@@ -24,9 +23,8 @@ public class CombatMenu : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		prompt = transform.Find ("Prompt").GetComponent<Text> ();
+		print ("initializing");
 		instance = this;
-		prompt.text = "";
 		backButton = transform.Find ("Back").gameObject;
 		backButton.SetActive (false);
 		itemActions = transform.Find ("ItemActions").gameObject;
@@ -52,6 +50,7 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public static void Hide(){
+		print ("hiding");
 		instance.attackButton.gameObject.SetActive (false);
 		instance.abilityButton.gameObject.SetActive (false);
 		instance.itemButton.gameObject.SetActive (false);
@@ -107,7 +106,7 @@ public class CombatMenu : MonoBehaviour {
 		backButton.SetActive (false);
 		itemActions.SetActive (false);
 		selectedItem = null;	
-		prompt.text = "";
+		Prompt.SetText ("Select an ability");
 
 		int i = 0;
 		int xIncrement = 0;
@@ -150,7 +149,7 @@ public class CombatMenu : MonoBehaviour {
 		backButton.SetActive (false);
 		itemActions.SetActive (false);
 		selectedItem = null;	
-		prompt.text = "";
+		Prompt.SetText ("Select an item");
 
 		int i = 0;
 
@@ -222,7 +221,7 @@ public class CombatMenu : MonoBehaviour {
 		}
 //		backButton.SetActive (true);
 		itemActions.SetActive (false);
-		prompt.text = "select target";
+		Prompt.SetText ("Select a target");
 	}
 
 	public void SelectItem(Item item){
@@ -256,7 +255,7 @@ public class CombatMenu : MonoBehaviour {
 		}
 		backButton.SetActive (true);
 		itemActions.SetActive (false);
-		prompt.text = "select a party member";
+		Prompt.SetText("Select a party member");
 
 //		Hide ();
 	}
@@ -264,7 +263,7 @@ public class CombatMenu : MonoBehaviour {
 	public static void SelectTarget(GameObject target){
 		
 		instance.backButton.SetActive (false);
-		instance.prompt.text = "";
+		Prompt.SetText ("Select a target");
 
 		if (instance.giveItem) {
 			GiveItem (target);
