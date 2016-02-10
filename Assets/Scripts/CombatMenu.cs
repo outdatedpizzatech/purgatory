@@ -12,7 +12,6 @@ public class CombatMenu : MonoBehaviour {
 	public List<GameObject> buttons = new List<GameObject>();
 	public List<GameObject> items = new List<GameObject>();
 	public PartyMember activePartyMember;
-	public GameObject backButton;
 	public Item selectedItem;
 	public bool giveItem;
 	private Button attackButton;
@@ -31,8 +30,6 @@ public class CombatMenu : MonoBehaviour {
 		ObjectTooltip.Hide ();
 		selectionMode = SelectionModes.None;
 		instance = this;
-		backButton = transform.Find ("Back").gameObject;
-		backButton.SetActive (false);
 		attackButton = transform.Find ("AttackButton").GetComponent<Button> ();
 		abilityButton = transform.Find ("AbilityButton").GetComponent<Button> ();
 		itemButton = transform.Find ("ItemButton").GetComponent<Button> ();
@@ -187,7 +184,6 @@ public class CombatMenu : MonoBehaviour {
 		selectionMode = SelectionModes.None;
 		HideSubActions ();
 		ClearButtonHighlights ();
-		backButton.SetActive (false);
 		selectedItem = null;	
 		Prompt.SetText ("Select an item");
 
@@ -312,7 +308,6 @@ public class CombatMenu : MonoBehaviour {
 	}
 
 	public static void SelectTarget(GameObject target){
-		instance.backButton.SetActive (false);
 		Prompt.Clear();
 
 		if (instance.selectionMode == SelectionModes.ActionTarget) {

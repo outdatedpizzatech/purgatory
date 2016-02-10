@@ -62,7 +62,7 @@ public class LevelUpHUD : MonoBehaviour {
 			GameObject buttonObject = Instantiate (Resources.Load ("ActionButton"), Vector3.zero, Quaternion.identity) as GameObject;
 			ActionButton actionButton = buttonObject.GetComponent<ActionButton> ();
 			buttonObject.transform.parent = instance.transform;
-			buttonObject.transform.position = new Vector3(100 + (i * 70), 500, buttonObject.transform.position.z);
+			buttonObject.transform.position = new Vector3(70 + (i * 70), 400, buttonObject.transform.position.z);
 			buttonObject.transform.localScale = new Vector3 (1f, 1f, 1);
 			Button button = buttonObject.GetComponent<Button>();
 			actionButton.sprite = Resources.Load<Sprite> ("Sprites/" + levelUpStruct.spriteName);

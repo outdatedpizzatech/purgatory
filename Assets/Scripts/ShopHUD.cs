@@ -77,9 +77,10 @@ public class ShopHUD : MonoBehaviour {
 		foreach(GameObject item in itemList){
 			GameObject actionButton = Instantiate (Resources.Load ("ActionButton"), Vector3.zero, Quaternion.identity) as GameObject;
 			actionButton.transform.parent = instance.transform;
-			actionButton.transform.position = new Vector3(100 + (i * 70), 500, item.transform.position.z);
+			actionButton.transform.position = new Vector3(70 + (i * 70), 400, item.transform.position.z);
 			actionButton.transform.localScale = new Vector3 (1f, 1f, 1);
 			actionButton.GetComponent<ActionButton> ().sprite = item.GetComponent<Item> ().sprite;
+			actionButton.GetComponent<ActionButton> ().startText = item.GetComponent<Item> ().Cost().ToString();
 			Button button = actionButton.GetComponent<Button>();
 
 			Item capturedItem = item.GetComponent<Item>();
