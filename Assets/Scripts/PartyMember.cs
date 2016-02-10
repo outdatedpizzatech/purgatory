@@ -23,7 +23,6 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public Item weapon;
 	public Item armor;
 	public Item accessory;
-	private Button button;
 	private GameObject overlay;
 	public IDictionary<ItemTypes, Item> equipment = new Dictionary<ItemTypes, Item>();
 	private Image image;
@@ -70,7 +69,6 @@ public class PartyMember : MonoBehaviour, IAttackable {
 
 	// Use this for initialization
 	void Start () {
-		button = GetComponent<Button> ();
 		health = maxHealth;
 		magic = maxMagic;
 		members.Add (this);

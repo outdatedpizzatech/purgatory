@@ -3,6 +3,10 @@ using System.Collections;
 
 public class BaddieCorgi : Baddie {
 
+	public override int Level(){
+		return(1);
+	}
+
 	public override string Name(){
 		return("Corgi-sama");
 	}

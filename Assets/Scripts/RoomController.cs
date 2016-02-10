@@ -23,16 +23,13 @@ public class RoomController : MonoBehaviour {
 	}
 
 	public void NextRoom(){
-		
-		if(Random.value < 1f){
 			floorNumber++;
 
-			AddEnemy ();
-			AddEnemy ();
-			AddEnemy ();
-			AddEnemy ();
-			AddEnemy ();
-			AddEnemy ();
+			int baddieLevel = 1;
+
+			for (int c = 0; c < 6; c++) {
+				AddEnemy (baddieLevel);
+			}
 
 			Transform formation = GameObject.Find ("BaddiesHUD/Formation" + this.enemies.Count).transform;
 
@@ -42,18 +39,14 @@ public class RoomController : MonoBehaviour {
 				i++;
 			}
 
-
 			GameController.EnterEncounter ();
-		}
 	}
 
-	void AddEnemy(){
-		GameObject enemyObject;
-		if(Random.value < .5f){
-			enemyObject = Instantiate (Resources.Load ("Baddies/Corgi"), Vector3.zero, Quaternion.identity) as GameObject;
-		}else{
-			enemyObject = Instantiate (Resources.Load ("Baddies/Frog"), Vector3.zero, Quaternion.identity) as GameObject;
-		}
+	void AddEnemy(int baddieLevel){
+		List<string> baddies = Bestiary.instance.baddies[baddieLevel];
+		int randomValue = Random.Range (0, baddies.Count);
+		print (baddies [randomValue]);
+		GameObject enemyObject = Instantiate (Resources.Load ("Baddies/"+ baddies[randomValue]), Vector3.zero, Quaternion.identity) as GameObject;
 		enemies.Add (enemyObject);
 		enemyObject.transform.parent = GameObject.Find ("BaddiesHUD").transform;
 	}

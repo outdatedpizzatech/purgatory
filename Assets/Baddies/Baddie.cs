@@ -7,6 +7,10 @@ public class Baddie : MonoBehaviour, IAttackable {
 	public int health;
 	private Button button;
 
+	public virtual int Level(){
+		return(0);
+	}
+
 	// Use this for initialization
 	void Start () {
 		health = 10;
