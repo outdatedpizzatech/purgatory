@@ -36,6 +36,7 @@ public class LevelUpHUD : MonoBehaviour {
 	}
 
 	public void Close(){
+		ObjectTooltip.Hide ();
 		GameController.ExitLevelUpMenu ();
 		PartyMember.UnselectAll ();
 		instance.transform.Find ("ConfirmLevelUp").position = new Vector3(9999, 9999, 0);

@@ -7,6 +7,7 @@ public class ObjectTooltip : MonoBehaviour {
 	private Image icon;
 	private Text nameText;
 	private Text description;
+	private Image background;
 	public static ObjectTooltip instance;
 
 	// Use this for initialization
@@ -15,10 +16,12 @@ public class ObjectTooltip : MonoBehaviour {
 		icon = transform.Find ("Icon").GetComponent<Image>();
 		nameText = transform.Find ("Name").GetComponent<Text>();
 		description = transform.Find ("Description").GetComponent<Text>();
+		background = transform.Find ("Background").GetComponent<Image> ();
 		Hide ();
 	}
 	
 	public static void Show(Ability ability){
+		instance.background.enabled = true;
 		instance.icon.enabled = true;
 		instance.icon.sprite = Resources.Load <Sprite>("Sprites/" + ability.SpriteName ());
 		instance.nameText.text = ability.Name();
@@ -26,6 +29,7 @@ public class ObjectTooltip : MonoBehaviour {
 	}
 
 	public static void Show(Item item){
+		instance.background.enabled = true;
 		instance.icon.enabled = true;
 		instance.icon.sprite = item.sprite;
 		instance.nameText.text = item.Name();
@@ -33,6 +37,7 @@ public class ObjectTooltip : MonoBehaviour {
 	}
 
 	public static void Show(LevelUpStruct levelUpStruct){
+		instance.background.enabled = true;
 		instance.icon.enabled = true;
 		instance.icon.sprite = Resources.Load <Sprite>("Sprites/" + levelUpStruct.spriteName);;
 		instance.nameText.text = levelUpStruct.name;
@@ -40,6 +45,7 @@ public class ObjectTooltip : MonoBehaviour {
 	}
 
 	public static void Hide(){
+		instance.background.enabled = false;
 		instance.icon.enabled = false;
 		instance.nameText.text = "";
 		instance.description.text = "";
