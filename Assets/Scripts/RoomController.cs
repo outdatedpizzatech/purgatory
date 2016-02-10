@@ -29,20 +29,16 @@ public class RoomController : MonoBehaviour {
 
 			AddEnemy ();
 			AddEnemy ();
+			AddEnemy ();
+			AddEnemy ();
+			AddEnemy ();
+			AddEnemy ();
+
+			Transform formation = GameObject.Find ("BaddiesHUD/Formation" + this.enemies.Count).transform;
 
 			int i = 0;
-
 			foreach (GameObject enemy in this.enemies) {
-				float negFactor = 1;
-				if (i % 2 == 0) negFactor = -1;
-				float xPosition;
-				if (this.enemies.Count % 2 == 0) {
-					xPosition = Mathf.CeilToInt ((float)(i + 1) / 2) * negFactor * 50f;
-				} else {
-					xPosition = Mathf.CeilToInt ((float)i / 2) * negFactor * 50f;
-				}
-				xPosition += 100;
-				enemy.transform.position = new Vector3(xPosition, 400, 0);
+				enemy.transform.position = formation.GetChild (i).position;	
 				i++;
 			}
 
