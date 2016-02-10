@@ -152,6 +152,10 @@ public class ShopHUD : MonoBehaviour {
 
 	public void Cancel(){
 		inTransaction = false;
+		buyButton.SetActive (true);
+		cancelButton.SetActive (false);
+		Prompt.Clear ();
+
 	}
 
 	public void Purchase(){

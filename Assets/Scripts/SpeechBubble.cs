@@ -32,7 +32,7 @@ public class SpeechBubble : MonoBehaviour {
 //	private bool cursorStale;
 	private ArrayList cursors;
 	public bool done;
-	public Vector3 initialLocation;
+	private Canvas canvas;
 	
 	public static SpeechBubble mainBubble;
 	
@@ -41,6 +41,7 @@ public class SpeechBubble : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		mainBubble = this;
+		canvas = transform.parent.GetComponent<Canvas> ();
 		text = transform.Find ("Text").GetComponent<Text>();
 		text.text = "";
 		bubble = GetComponent<RectTransform>();
@@ -50,21 +51,20 @@ public class SpeechBubble : MonoBehaviour {
 		inFreezeState = freezesGameOnDisplay;
 		cursors = new ArrayList();
 		textToDisplay = new string[] { };
-		initialLocation = transform.position;
-		transform.position = new Vector3 (9999, 9999, 9999);
+		Hide ();
 	}
 	
 	public void Activate(){
 		inFreezeState = freezesGameOnDisplay;
 		GameController.Freeze ();
-		transform.position = initialLocation;
+		Show ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		currentTimeBetweenCharacters += Time.deltaTime;
 		if (Initialized ()) {
-			transform.position = initialLocation;
+			Show ();
 			if (currentTimeBetweenCharacters >= maxTimeBetweenCharacters && textIndex < textToDisplay [textBubbleIndex].Length) {
 				GameController.Freeze ();
 				done = false;
@@ -119,7 +119,7 @@ public class SpeechBubble : MonoBehaviour {
 			text.text = "";
 			if(freezesGameOnDisplay) inFreezeState = false;
 			textToDisplay = new string[] {};
-			transform.position = new Vector3(9999, 9999, 9999);
+			Hide ();
 			GameController.Unfreeze ();
 		}
 	}
@@ -151,5 +151,13 @@ public class SpeechBubble : MonoBehaviour {
 
 	public bool Initialized(){
 		return(textToDisplay.Length > 0);
+	}
+
+	public void Hide(){
+		canvas.enabled = false;
+	}
+
+	public void Show(){
+		canvas.enabled = true;
 	}
 }
