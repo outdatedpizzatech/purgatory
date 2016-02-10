@@ -21,7 +21,7 @@ public class ItemSword : Item {
 		bool success = false;
 		if (originator.gameObject == target) {
 			EventQueue.AddMessage (owner.memberName + " equipped sword");
-			originator.turnAvailable = false;
+			originator.ResetTurn();
 			owner.Equip (this);
 			success = true;
 		} else if (target.GetComponent<Baddie> ()) {
@@ -30,7 +30,7 @@ public class ItemSword : Item {
 			Item addedItem = target.GetComponent<PartyMember> ().AddItem (this);
 			if (addedItem != null) {
 				originator.RemoveItem (this);
-				originator.turnAvailable = false;
+				originator.ResetTurn();
 				EventQueue.AddMessage ("handed it over");
 				success = true;
 			} else {

@@ -18,7 +18,7 @@ public class ItemPotion : Item {
 		if (originator.gameObject == target) {
 			EventQueue.AddMessage (originator.memberName + " drank a potion");
 			EventQueue.AddEvent (target.gameObject, -20, DamageTypes.Physical);
-			owner.turnAvailable = false;
+			owner.ResetTurn();
 			owner.RemoveItem (this);
 			Destroy (gameObject);
 			success = true;
@@ -28,7 +28,7 @@ public class ItemPotion : Item {
 			Item addedItem = target.GetComponent<PartyMember> ().AddItem (this);
 			if (addedItem != null) {
 				originator.RemoveItem (this);
-				originator.turnAvailable = false;
+				originator.ResetTurn();
 				EventQueue.AddMessage ("handed it over");
 				success = true;
 			} else {

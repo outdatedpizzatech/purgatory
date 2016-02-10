@@ -6,9 +6,15 @@ public class Baddie : MonoBehaviour, IAttackable {
 
 	public int health;
 	private Button button;
+	public float turn;
+	public float maxTurn = 100;
 
 	public virtual int Level(){
 		return(0);
+	}
+
+	public bool Ready(){
+		return(turn <= 0);
 	}
 
 	// Use this for initialization

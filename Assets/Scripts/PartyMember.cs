@@ -11,7 +11,6 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public int magic;
 	public int maxMagic;
 	public static List<PartyMember> members = new List<PartyMember>();
-	public bool turnAvailable;
 	public delegate void ActionDelegate(PartyMember originator, GameObject target);
 	public string memberName;
 	public List<Ability> abilityList = new List<Ability>();
@@ -26,6 +25,16 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	private GameObject overlay;
 	public IDictionary<ItemTypes, Item> equipment = new Dictionary<ItemTypes, Item>();
 	private Image image;
+	public float turn;
+	public float maxTurn = 100;
+
+	public bool Ready(){
+		return(turn <= 0);
+	}
+
+	public void ResetTurn(){
+		turn = maxTurn;
+	}
 
 	public void ShowOverlay(){
 		overlay.SetActive (true);
@@ -72,7 +81,6 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		health = maxHealth;
 		magic = maxMagic;
 		members.Add (this);
-		turnAvailable = true;
 		overlay = transform.Find ("Overlay").gameObject;
 		HideOverlay ();
 		SetJob ();
