@@ -32,6 +32,13 @@ public class ObjectTooltip : MonoBehaviour {
 		instance.description.text = item.Description();
 	}
 
+	public static void Show(LevelUpStruct levelUpStruct){
+		instance.icon.enabled = true;
+		instance.icon.sprite = Resources.Load <Sprite>("Sprites/" + levelUpStruct.spriteName);;
+		instance.nameText.text = levelUpStruct.name;
+		instance.description.text = levelUpStruct.description;
+	}
+
 	public static void Hide(){
 		instance.icon.enabled = false;
 		instance.nameText.text = "";

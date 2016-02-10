@@ -10,9 +10,9 @@ public class LevelUpHUD : MonoBehaviour {
 	public static int selectedIndex;
 	public static LevelUpStruct selectedLevelUpStruct;
 	public Vector3 confirmButtonPosition;
-	public Text prompt;
 	public static List<GameObject> buttonList;
 	public Canvas canvas;
+	private ActionButton selectedButton;
 
 
 	// Use this for initialization
@@ -21,8 +21,6 @@ public class LevelUpHUD : MonoBehaviour {
 		selectedPartyMember = null;
 		canvas = GetComponent<Canvas> ();
 		confirmButtonPosition = instance.transform.Find ("ConfirmLevelUp").position;
-		prompt = transform.Find ("Prompt").GetComponent<Text>();
-		prompt.text = "";
 		instance.transform.Find ("ConfirmLevelUp").position = new Vector3(9999, 9999, 0);
 		buttonList = new List<GameObject> ();
 	}
@@ -34,14 +32,14 @@ public class LevelUpHUD : MonoBehaviour {
 
 	public void Show(){
 		GameController.EnterLevelUpMenu ();
-		prompt.text = "Select a party member";
+		Prompt.SetText("Select a party member");
 	}
 
 	public void Close(){
 		GameController.ExitLevelUpMenu ();
 		PartyMember.UnselectAll ();
 		instance.transform.Find ("ConfirmLevelUp").position = new Vector3(9999, 9999, 0);
-		prompt.text = "";
+		Prompt.Clear ();
 
 		DestroyButtons ();
 	}
@@ -54,16 +52,25 @@ public class LevelUpHUD : MonoBehaviour {
 	}
 
 	public static void ShowAbilitiesForPartyMember(PartyMember partyMember){
+		ObjectTooltip.Hide ();
 		DestroyButtons ();
-		instance.prompt.text = "Select a level up";
+		Prompt.SetText("Select a level up");
 		selectedPartyMember = partyMember;
 		int i = 0;
 		foreach(LevelUpStruct levelUpStruct in partyMember.job.LevelUps()){
-			GameObject buttonObject = Instantiate (Resources.Load ("LevelUpButton"), Vector3.zero, Quaternion.identity) as GameObject;
+			GameObject buttonObject = Instantiate (Resources.Load ("ActionButton"), Vector3.zero, Quaternion.identity) as GameObject;
+			ActionButton actionButton = buttonObject.GetComponent<ActionButton> ();
 			buttonObject.transform.parent = instance.transform;
 			buttonObject.transform.position = new Vector3(100 + (i * 70), 500, buttonObject.transform.position.z);
 			buttonObject.transform.localScale = new Vector3 (1f, 1f, 1);
 			Button button = buttonObject.GetComponent<Button>();
+			actionButton.sprite = Resources.Load<Sprite> ("Sprites/" + levelUpStruct.spriteName);
+			if (selectedPartyMember.HasLevelUpSlot (i)) {
+				actionButton.startText = "LEARNED";
+			}else{
+				actionButton.startText = levelUpStruct.cost.ToString();
+			}
+
 			button.transform.Find ("Text").GetComponent<Text> ().text = levelUpStruct.name;
 
 			LevelUpStruct capturedLevelUpStruct = levelUpStruct;
@@ -81,32 +88,37 @@ public class LevelUpHUD : MonoBehaviour {
 
 	public static void HighlightButton(GameObject buttonObject){
 		ClearButtonHighlights ();
-		buttonObject.GetComponent<Image> ().color = Color.yellow;
+		buttonObject.GetComponent<ActionButton> ().Highlight ();
+		instance.selectedButton = buttonObject.GetComponent<ActionButton> ();
 	}
 
 	public static void ClearButtonHighlights(){
 		foreach(GameObject button in buttonList){
-			button.GetComponent<Image> ().color = Color.white;
+			button.GetComponent<ActionButton> ().UnHighlight ();
 		}
+		instance.selectedButton = null;
 	}
 
 	public static void ConfirmLevelUp(LevelUpStruct levelUpStruct, int inputSelectedIndex){
 		selectedIndex = inputSelectedIndex;
 		selectedLevelUpStruct = levelUpStruct;
+		ObjectTooltip.Show (levelUpStruct);
 		if(levelUpStruct.cost <= PartyMember.currency && !selectedPartyMember.HasLevelUpSlot (selectedIndex)){
 			instance.transform.Find ("ConfirmLevelUp").position = instance.confirmButtonPosition;
 		}else{
 			instance.transform.Find ("ConfirmLevelUp").position = new Vector3(9999, 9999, 0);
 		}
-		instance.prompt.text = selectedLevelUpStruct.name + ": " + selectedLevelUpStruct.description + ". Cost: " + selectedLevelUpStruct.cost;
+		Prompt.Clear ();
 	}
 
 	public void ExecuteLevelUp(){
+		ObjectTooltip.Hide ();
 		selectedLevelUpStruct.performer (selectedPartyMember);
 		selectedPartyMember.UpdateLevelUpSlot (selectedIndex);
 		transform.Find ("ConfirmLevelUp").position = new Vector3(9999, 9999, 0);
-		instance.prompt.text = "";
+		Prompt.Clear ();
 		PartyMember.currency -= selectedLevelUpStruct.cost;
+		selectedButton.SetText ("LEARNED");
 		ClearButtonHighlights ();
 	}
 }

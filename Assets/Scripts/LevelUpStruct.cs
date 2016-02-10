@@ -8,13 +8,15 @@ public struct LevelUpStruct
 	public string name;
 	public string description;
 	public int cost;
+	public string spriteName;
 	public Perform performer;
 
-	public LevelUpStruct(string inputName, string inputDescription, int inputCost, Perform inputPerformer)
+	public LevelUpStruct(string inputName, string inputDescription, int inputCost, string inputSpriteName, Perform inputPerformer)
 	{
 		name = inputName;
 		description = inputDescription;
 		cost = inputCost;
 		performer = inputPerformer;
+		spriteName = inputSpriteName;
 	}
 }

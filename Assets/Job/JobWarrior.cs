@@ -31,8 +31,8 @@ public class JobWarrior : Job {
 
 	public override List<LevelUpStruct> LevelUps(){
 		List<LevelUpStruct> levelUps = new List<LevelUpStruct> ();
-		levelUps.Add (new LevelUpStruct ("Stats I", "Raises strength by 5", 100, LevelUpStatsI));
-		levelUps.Add (new LevelUpStruct ("Stats II", "Raises strength by 20", 300, LevelUpStatsII));
+		levelUps.Add (new LevelUpStruct ("Stats I", "Raises strength by 5", 100, "button_strength_up_1", LevelUpStatsI));
+		levelUps.Add (new LevelUpStruct ("Stats II", "Raises strength by 20", 300, "button_strength_up_2", LevelUpStatsII));
 		return(levelUps);
 	}
 
