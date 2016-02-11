@@ -27,7 +27,8 @@ public class BattleController : MonoBehaviour {
 			turnable.IncrementTurn (-minTurn);
 		}
 
-		print ("advanced counter by " + minTurn);
+		Timeline.instance.turnables = instance.turnables;
+		Timeline.Generate ();
 	}
 	
 	// Update is called once per frame
@@ -69,6 +70,7 @@ public class BattleController : MonoBehaviour {
 			}
 		} else {
 			if (EventQueue.instance.actionEvents.Count < 1) {
+				Timeline.Hide ();
 				GameController.ExitEncounter ();
 				turnables.Clear ();
 			}
@@ -80,11 +82,11 @@ public class BattleController : MonoBehaviour {
 		inCombat = true;
 		EventQueue.AddMessage ("You encounter some baddies");
 		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.turnable.turn = Random.Range(0, 100);
+			partyMember.turnable.turn = Random.Range(0, 100f);
 			instance.turnables.Add(partyMember.turnable);
 		}
 		foreach (GameObject baddie in RoomController.instance.enemies) {
-			baddie.GetComponent<Turnable>().turn = Random.Range(0, 100);
+			baddie.GetComponent<Turnable>().turn = Random.Range(0, 100f);
 			instance.turnables.Add(baddie.GetComponent<Turnable>());
 		}
 

@@ -20,6 +20,7 @@ public class Baddie : MonoBehaviour, IAttackable {
 	void Start () {
 		health = 10;
 		button = GetComponent<Button> ();
+		turnable.sprite = transform.Find ("Body").GetComponent<Image> ().sprite;
 	}
 
 	public void DestroyMe(){

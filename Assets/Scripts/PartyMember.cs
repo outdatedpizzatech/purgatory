@@ -87,6 +87,7 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		equipment [ItemTypes.Accessory] = null;
 		image = transform.Find ("Image").GetComponent<Image> ();
 		image.sprite = Resources.Load<Sprite> ("Sprites/job_" + job.SpriteName());
+		turnable.sprite = transform.Find ("Image").GetComponent<Image> ().sprite;
 	}
 
 	void SetLevelUps(){

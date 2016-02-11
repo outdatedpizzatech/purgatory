@@ -23,23 +23,24 @@ public class RoomController : MonoBehaviour {
 	}
 
 	public void NextRoom(){
-			floorNumber++;
+		floorNumber++;
 
-			int baddieLevel = 1;
+		int baddieLevel = 1;
+		int baddieCount = 6;
 
-			for (int c = 0; c < 6; c++) {
-				AddEnemy (baddieLevel);
-			}
+		for (int c = 0; c < baddieCount; c++) {
+			AddEnemy (baddieLevel);
+		}
 
-			Transform formation = GameObject.Find ("BaddiesHUD/Formation" + this.enemies.Count).transform;
+		Transform formation = GameObject.Find ("BaddiesHUD/Formation" + this.enemies.Count).transform;
 
-			int i = 0;
-			foreach (GameObject enemy in this.enemies) {
-				enemy.transform.position = formation.GetChild (i).position;	
-				i++;
-			}
+		int i = 0;
+		foreach (GameObject enemy in this.enemies) {
+			enemy.transform.position = formation.GetChild (i).position;	
+			i++;
+		}
 
-			GameController.EnterEncounter ();
+		GameController.EnterEncounter ();
 	}
 
 	void AddEnemy(int baddieLevel){
