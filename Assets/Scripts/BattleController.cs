@@ -7,6 +7,7 @@ public class BattleController : MonoBehaviour {
 	public static BattleController instance;
 	public static bool inCombat;
 	public bool combatMenuDisplayed;
+	public List<Turnable> turnables = new List<Turnable>();
 
 	// Use this for initialization
 	void Start () {
@@ -16,26 +17,14 @@ public class BattleController : MonoBehaviour {
 	public static void AdvanceTurns(){
 		float minTurn = 9999999;
 
-		foreach (PartyMember partyMember in PartyMember.members) {
-			if (partyMember.turn < minTurn) {
-				minTurn = partyMember.turn;
-			}
-		}
-		
-		foreach (GameObject enemy in RoomController.instance.enemies) {
-			Baddie baddie = enemy.GetComponent<Baddie> ();
-			if (baddie.turn < minTurn) {
-				minTurn = baddie.turn;
+		foreach (Turnable turnable in instance.turnables) {
+			if (turnable.turn < minTurn) {
+				minTurn = turnable.turn;
 			}
 		}
 
-		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.turn -= minTurn;
-		}
-
-		foreach (GameObject enemy in RoomController.instance.enemies) {
-			Baddie baddie = enemy.GetComponent<Baddie> ();
-			baddie.turn -= minTurn;
+		foreach (Turnable turnable in instance.turnables) {
+			turnable.IncrementTurn (-minTurn);
 		}
 
 		print ("advanced counter by " + minTurn);
@@ -54,26 +43,20 @@ public class BattleController : MonoBehaviour {
 				if(EventQueue.instance.actionEvents.Count < 1){
 					PartyMember activePartyMember = null;
 					Baddie activeBaddie = null;
-					foreach (PartyMember partyMember in PartyMember.members) {
-						if (partyMember.Ready()) {
-							activePartyMember = partyMember;
-							print ("active member!");
+
+					foreach (Turnable turnable in turnables) {
+						if(turnable.Ready()){
+							activePartyMember = turnable.GetComponent<PartyMember>();
+							if (activePartyMember == null) {
+								activeBaddie = turnable.GetComponent<Baddie> ();
+							}
 							break;
 						}
 					}
-					if (activePartyMember == null) {
-						foreach (GameObject enemy in RoomController.instance.enemies) {
-							if (enemy.GetComponent<Baddie> ().Ready ()) {
-								activeBaddie = enemy.GetComponent<Baddie> ();
-								print ("active baddie!");
-								break;
-							}
-						}
-					}
+
 					if (activePartyMember != null) {
 						if (!combatMenuDisplayed) {
 							combatMenuDisplayed = true;
-							print ("show me the menu");
 							EventQueue.AddShowCombatMenu (activePartyMember);
 						}
 					}else if (activeBaddie != null) {
@@ -85,29 +68,36 @@ public class BattleController : MonoBehaviour {
 
 			}
 		} else {
-			if(EventQueue.instance.actionEvents.Count < 1) GameController.ExitEncounter ();
+			if (EventQueue.instance.actionEvents.Count < 1) {
+				GameController.ExitEncounter ();
+				turnables.Clear ();
+			}
 		}
 	}
 
 	public static void StartBattle(){
+
 		inCombat = true;
 		EventQueue.AddMessage ("You encounter some baddies");
 		foreach (PartyMember partyMember in PartyMember.members) {
-			partyMember.turn = Random.Range(0, 100);
+			partyMember.turnable.turn = Random.Range(0, 100);
+			instance.turnables.Add(partyMember.turnable);
 		}
 		foreach (GameObject baddie in RoomController.instance.enemies) {
-			baddie.GetComponent<Baddie>().turn = Random.Range(0, 100);
+			baddie.GetComponent<Turnable>().turn = Random.Range(0, 100);
+			instance.turnables.Add(baddie.GetComponent<Turnable>());
 		}
+
 	}
 
 	public static void ExecuteAction(Ability ability, PartyMember partyMember, GameObject target){
 		ability.Perform(partyMember, target);
-		partyMember.ResetTurn();
+		partyMember.turnable.ResetTurn();
 	}
 
 	public static void ExecuteAction(Item item, PartyMember partyMember, GameObject target){
 		bool success = item.Use(partyMember, target);
-		if(success) partyMember.ResetTurn();
+		if(success) partyMember.turnable.ResetTurn();
 	}
 
 }

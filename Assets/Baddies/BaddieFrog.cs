@@ -17,6 +17,6 @@ public class BaddieFrog : Baddie {
 		int damage = Random.Range (1, 10);
 		EventQueue.AddMessage (Name() + " licks " + target.memberName + "!");
 		EventQueue.AddEvent (target.gameObject, damage, DamageTypes.Physical);
-		turn = maxTurn;
+		turnable.ResetTurn ();
 	}
 }

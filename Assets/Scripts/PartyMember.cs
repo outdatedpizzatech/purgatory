@@ -25,16 +25,7 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	private GameObject overlay;
 	public IDictionary<ItemTypes, Item> equipment = new Dictionary<ItemTypes, Item>();
 	private Image image;
-	public float turn;
-	public float maxTurn = 100;
-
-	public bool Ready(){
-		return(turn <= 0);
-	}
-
-	public void ResetTurn(){
-		turn = maxTurn;
-	}
+	public Turnable turnable;
 
 	public void ShowOverlay(){
 		overlay.SetActive (true);
@@ -78,6 +69,7 @@ public class PartyMember : MonoBehaviour, IAttackable {
 
 	// Use this for initialization
 	void Start () {
+		turnable = GetComponent<Turnable> ();
 		health = maxHealth;
 		magic = maxMagic;
 		members.Add (this);

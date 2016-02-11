@@ -6,15 +6,14 @@ public class Baddie : MonoBehaviour, IAttackable {
 
 	public int health;
 	private Button button;
-	public float turn;
-	public float maxTurn = 100;
+	public Turnable turnable;
 
 	public virtual int Level(){
 		return(0);
 	}
 
-	public bool Ready(){
-		return(turn <= 0);
+	void Awake(){
+		turnable = gameObject.AddComponent<Turnable> ();
 	}
 
 	// Use this for initialization
@@ -26,6 +25,7 @@ public class Baddie : MonoBehaviour, IAttackable {
 	public void DestroyMe(){
 		EventQueue.AddMessage (Name() + " is destroyed", 1);
 		RoomController.instance.enemies.Remove (gameObject);
+		BattleController.instance.turnables.Remove (turnable);
 		Destroy (gameObject);
 	}
 
