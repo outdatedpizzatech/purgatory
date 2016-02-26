@@ -6,17 +6,16 @@ using System;
 
 public class PartyMember : MonoBehaviour, IAttackable {
 
-	public int health;
-	public int maxHealth;
-	public int magic;
-	public int maxMagic;
 	public static List<PartyMember> members = new List<PartyMember>();
 	public delegate void ActionDelegate(PartyMember originator, GameObject target);
 	public string memberName;
 	public List<Ability> abilityList = new List<Ability>();
 	public Job job;
 	public static int currency;
-	public int strength;
+	public int strength = 0;
+	public int magicPoints = 0;
+	public int hitPoints = 0;
+	public int agility = 0;
 	public List<List<bool>> levelUps = new List<List<bool>>();
 	public List<Item> heldItems = new List<Item>();
 	public Item weapon;
@@ -26,6 +25,24 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public IDictionary<ItemTypes, Item> equipment = new Dictionary<ItemTypes, Item>();
 	private Image image;
 	public Turnable turnable;
+	public int maxHitPoints = 0;
+	public int maxMagicPoints = 0;
+
+	public int Strength(){
+		return(job.Strength () + this.strength);
+	}
+
+	public int Agility(){
+		return(job.Agility () + this.agility);
+	}
+
+	public int MaxMagicPoints(){
+		return(job.MagicPoints () + this.maxMagicPoints);
+	}
+
+	public int MaxHitPoints(){
+		return(job.HitPoints() + this.maxHitPoints);
+	}
 
 	public void ShowOverlay(){
 		overlay.SetActive (true);
@@ -70,14 +87,14 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	// Use this for initialization
 	void Start () {
 		turnable = GetComponent<Turnable> ();
-		health = maxHealth;
-		magic = maxMagic;
+		magicPoints = maxMagicPoints;
 		members.Add (this);
 		overlay = transform.Find ("Overlay").gameObject;
 		HideOverlay ();
 		SetJob ();
 		SetAbilities ();
 		SetLevelUps ();
+		hitPoints = MaxHitPoints();
 		currency = 500;
 		AddItem(Instantiate (Resources.Load ("Items/Potion"), transform.position, Quaternion.identity) as GameObject);
 		AddItem(Instantiate (Resources.Load ("Items/Sword"), transform.position, Quaternion.identity) as GameObject);
@@ -104,7 +121,6 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	void SetJob(){
 		int randomValue = UnityEngine.Random.Range(0, Job.jobs.Count);
 		job = Job.jobs[randomValue];
-		strength = job.Strength();
 	}
 	
 	// Update is called once per frame
@@ -131,13 +147,13 @@ public class PartyMember : MonoBehaviour, IAttackable {
 			ShopHUD.SelectPartyMember (gameObject);
 		}else {
 			Select ();
-			LevelUpHUD.ShowAbilitiesForPartyMember (this);
+			LevelUpHUD.SelectPartyMember (this);
 		}
 	}
 
 	public void ReceiveHit(int damage, DamageTypes damageType){
 		EventQueue.AddMessage (memberName + " sustains " + damage + " damage", 1);
-		health -= damage;
+		hitPoints -= damage;
 	}
 
 	public void DestroyMe(){
@@ -168,7 +184,9 @@ public class PartyMember : MonoBehaviour, IAttackable {
 		transform.Find ("Selector").GetComponent<Image> ().color = new Color (1, 1, 1, 0);
 	}
 
-	public int Health(){
-		return(health);
+	public int HitPoints(){
+		return(hitPoints);
 	}
+
+
 }

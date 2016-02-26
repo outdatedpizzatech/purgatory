@@ -7,6 +7,8 @@ public class LevelUpHUD : MonoBehaviour {
 
 	public static LevelUpHUD instance;
 	public static PartyMember selectedPartyMember;
+	public static LevelUpStruct.LevelUpTypes selectedLevelUpType;
+	public static LevelUpStruct.LevelUpTypes selectedLevelUpType2;
 	public static int selectedIndex;
 	public static LevelUpStruct selectedLevelUpStruct;
 	public Vector3 confirmButtonPosition;
@@ -30,8 +32,14 @@ public class LevelUpHUD : MonoBehaviour {
 	
 	}
 
+	public void SelectBoostLevelUps(){
+		print ("AAAA");
+		SelectLevelUpType (LevelUpStruct.LevelUpTypes.Boost);
+	}
+
 	public void Show(){
 		GameController.EnterLevelUpMenu ();
+		instance.transform.Find ("CategoryButtons").GetComponent<Canvas> ().enabled = false;
 		Prompt.SetText("Select a party member");
 	}
 
@@ -52,38 +60,67 @@ public class LevelUpHUD : MonoBehaviour {
 		buttonList = new List<GameObject> ();
 	}
 
-	public static void ShowAbilitiesForPartyMember(PartyMember partyMember){
-		ObjectTooltip.Hide ();
-		DestroyButtons ();
-		Prompt.SetText("Select a level up");
+	public static void SelectPartyMember(PartyMember partyMember){
+		instance.transform.Find ("CategoryButtons").GetComponent<Canvas> ().enabled = true;
 		selectedPartyMember = partyMember;
-		int i = 0;
-		foreach(LevelUpStruct levelUpStruct in partyMember.job.LevelUps()){
-			GameObject buttonObject = Instantiate (Resources.Load ("ActionButton"), Vector3.zero, Quaternion.identity) as GameObject;
-			ActionButton actionButton = buttonObject.GetComponent<ActionButton> ();
-			buttonObject.transform.parent = instance.transform;
-			buttonObject.transform.position = new Vector3(70 + (i * 70), 400, buttonObject.transform.position.z);
-			buttonObject.transform.localScale = new Vector3 (1f, 1f, 1);
-			Button button = buttonObject.GetComponent<Button>();
-			actionButton.sprite = Resources.Load<Sprite> ("Sprites/" + levelUpStruct.spriteName);
-			if (selectedPartyMember.HasLevelUpSlot (i)) {
-				actionButton.startText = "LEARNED";
-			}else{
-				actionButton.startText = levelUpStruct.cost.ToString();
+		if(selectedLevelUpType == LevelUpStruct.LevelUpTypes.None) Prompt.SetText("Select a category");
+		ShowLevelUps ();
+	}
+
+	public static void SelectLevelUpType(LevelUpStruct.LevelUpTypes levelUpType){
+		print ("BBBB");
+		selectedLevelUpType = levelUpType;
+		Prompt.Clear ();
+		ShowLevelUps ();
+	}
+
+	public static void ShowLevelUps(){
+		print (selectedLevelUpType2);
+		if (selectedLevelUpType != LevelUpStruct.LevelUpTypes.None && selectedPartyMember != null) {
+			ObjectTooltip.Hide ();
+			DestroyButtons ();
+			int i = 0;
+			int s = 0;
+			int xIncrement = 0;
+			foreach (LevelUpStruct levelUpStruct in selectedPartyMember.job.LevelUps()) {
+				if (levelUpStruct.levelUpType == selectedLevelUpType) {
+					if (xIncrement > 3)
+						xIncrement = 0;
+					float x = 70 + ((xIncrement) * 70);
+					float y = 400 - (Mathf.Floor(s/4) * 70);
+
+					GameObject buttonObject = Instantiate (Resources.Load ("ActionButton"), Vector3.zero, Quaternion.identity) as GameObject;
+					ActionButton actionButton = buttonObject.GetComponent<ActionButton> ();
+					buttonObject.transform.parent = instance.transform;
+					buttonObject.transform.position = new Vector3 (x, y, buttonObject.transform.position.z);
+					buttonObject.transform.localScale = new Vector3 (1f, 1f, 1);
+					Button button = buttonObject.GetComponent<Button> ();
+					actionButton.sprite = Resources.Load<Sprite> ("Sprites/" + levelUpStruct.spriteName);
+					if (selectedPartyMember.HasLevelUpSlot (i)) {
+						actionButton.startText = "LEARNED";
+					} else {
+						actionButton.startText = levelUpStruct.cost.ToString ();
+					}
+
+					button.transform.Find ("Text").GetComponent<Text> ().text = levelUpStruct.name;
+
+					LevelUpStruct capturedLevelUpStruct = levelUpStruct;
+					int capturedIndex = i;
+
+					button.onClick.AddListener (delegate {
+						ConfirmLevelUp (capturedLevelUpStruct, capturedIndex);
+					});
+					button.onClick.AddListener (delegate {
+						HighlightButton (button.gameObject);
+					});
+
+					buttonList.Add (button.gameObject);
+					xIncrement++;
+					s++;
+				}
+
+				i++;
 			}
-
-			button.transform.Find ("Text").GetComponent<Text> ().text = levelUpStruct.name;
-
-			LevelUpStruct capturedLevelUpStruct = levelUpStruct;
-			int capturedIndex = i;
-
-			button.onClick.AddListener( delegate {
-				ConfirmLevelUp(capturedLevelUpStruct, capturedIndex); } );
-			button.onClick.AddListener( delegate {
-				HighlightButton(button.gameObject); } );
-
-			buttonList.Add (button.gameObject);
-			i++;
 		}
 	}
 

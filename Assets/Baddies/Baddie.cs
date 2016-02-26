@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Baddie : MonoBehaviour, IAttackable {
 
-	public int health;
+	public int hitPoints;
 	private Button button;
 	public Turnable turnable;
 
@@ -18,7 +18,7 @@ public class Baddie : MonoBehaviour, IAttackable {
 
 	// Use this for initialization
 	void Start () {
-		health = 10;
+		hitPoints = 10;
 		button = GetComponent<Button> ();
 		turnable.sprite = transform.Find ("Body").GetComponent<Image> ().sprite;
 	}
@@ -33,9 +33,9 @@ public class Baddie : MonoBehaviour, IAttackable {
 	public void ReceiveHit(int damage, DamageTypes damageType){
 		if (gameObject != null) {
 			int index = EventQueue.AddMessage (Name () + " surstains " + damage + " damage");
-			health -= damage;
+			hitPoints -= damage;
 
-			if (health < 1) {
+			if (hitPoints < 1) {
 				EventQueue.AddDestroy (gameObject, index + 1);
 			}
 		}
@@ -45,8 +45,8 @@ public class Baddie : MonoBehaviour, IAttackable {
 		return("NoName");
 	}
 
-	public int Health(){
-		return(health);
+	public int HitPoints(){
+		return(hitPoints);
 	}
 
 	public void DoClickAction() {

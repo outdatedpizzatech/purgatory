@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour {
 	void Update(){
 		bool partyIsAlive = false;
 		foreach (PartyMember partyMember in PartyMember.members) {
-			partyIsAlive = partyMember.health > 0;
+			partyIsAlive = partyMember.HitPoints() > 0;
 			if (partyIsAlive) {
 				break;
 			}

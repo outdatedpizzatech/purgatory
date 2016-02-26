@@ -9,7 +9,7 @@ public interface IAttackable {
 
 	void DestroyMe ();
 
-	int Health ();
+	int HitPoints ();
 
 //	void RegisterSuccessfulDestroy(float value);
 

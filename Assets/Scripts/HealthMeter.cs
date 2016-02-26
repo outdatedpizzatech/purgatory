@@ -15,6 +15,6 @@ public class HealthMeter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		text.text = partyMember.health.ToString();
+		text.text = partyMember.HitPoints().ToString();
 	}
 }

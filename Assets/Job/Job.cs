@@ -20,7 +20,23 @@ public class Job {
 	}
 
 	public virtual int Strength(){
-		return(1);
+		return(0);
+	}
+
+	public virtual int Agility(){
+		return(0);
+	}
+
+	public virtual int Magic(){
+		return(0);
+	}
+
+	public virtual int HitPoints(){
+		return(0);
+	}
+
+	public virtual int MagicPoints(){
+		return(0);
 	}
 
 	public virtual List<LevelUpStruct> LevelUps(){
