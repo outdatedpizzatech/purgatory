@@ -7,7 +7,6 @@ public class JobWarrior : Job {
 
 	public override List<Type> Abilities(){
 		List<Type> list = new List<Type> ();
-		list.Add (typeof(AbilityAttack));
 		list.Add (typeof(AbilityHeal));
 		list.Add (typeof(AbilityHeal));
 		list.Add (typeof(AbilityFire));
@@ -52,6 +51,7 @@ public class JobWarrior : Job {
 		levelUps.Add (new LevelUpStruct ("Boost III", "STR + 15, Max HP + 70", 1000, "button_strength_up_2", BoostIII, LevelUpStruct.LevelUpTypes.Boost));
 		levelUps.Add (new LevelUpStruct ("Boost IV", "STR + 30, Max HP + 150", 2000, "button_strength_up_2", BoostIV, LevelUpStruct.LevelUpTypes.Boost));
 		levelUps.Add (new LevelUpStruct ("Boost V", "STR + 75, Max HP + 300", 5000, "button_strength_up_2", BoostV, LevelUpStruct.LevelUpTypes.Boost));
+		levelUps.Add (new LevelUpStruct ("Power Break", "Reduces enemy strength by 5%", 100, "button_strength_up_2", PowerBreak, LevelUpStruct.LevelUpTypes.Ability));
 		return(levelUps);
 	}
 
@@ -88,6 +88,11 @@ public class JobWarrior : Job {
 		EventQueue.AddMessage ("Strength increased by 75");
 		partyMember.maxHitPoints += 300;
 		EventQueue.AddMessage ("Max HP increased by 300");
+	}
+
+	public void PowerBreak(PartyMember partyMember){
+		partyMember.abilities.Add (new AbilityPowerBreak());
+		EventQueue.AddMessage ("Learned Power Break!");
 	}
 
 	public override string SpriteName(){

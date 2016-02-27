@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class ActionEvent {
@@ -11,6 +12,7 @@ public class ActionEvent {
 	public bool executed;
 	public bool combatMenu;
 	public PartyMember partyMember;
+	public Action lambda;
 
 	public void Execute(){
 		if (combatMenu) {
@@ -18,7 +20,9 @@ public class ActionEvent {
 		} else if (text != null) {
 			SpeechBubble.AddMessage (text);
 		} else {
-			if (attackable != null) {
+			if (lambda != null) {
+				lambda ();
+			}else if (attackable != null) {
 				IAttackable v = attackable.GetComponent (typeof(IAttackable)) as IAttackable;
 				if (!destroy) {
 					v.ReceiveHit (damage, damageType);

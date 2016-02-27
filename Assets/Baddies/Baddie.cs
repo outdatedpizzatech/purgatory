@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class Baddie : MonoBehaviour, IAttackable {
+public class Baddie : Being, IAttackable {
 
 	public int hitPoints;
 	private Button button;

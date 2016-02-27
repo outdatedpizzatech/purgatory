@@ -127,7 +127,7 @@ public class CombatMenu : MonoBehaviour {
 		});
 
 		attackButton.onClick.AddListener (delegate {
-			SelectAbility (activePartyMember.abilityList[0]);
+			SelectAbility (activePartyMember.abilities[0]);
 		});
 
 		abilityButton.onClick.AddListener (delegate {
@@ -149,7 +149,7 @@ public class CombatMenu : MonoBehaviour {
 
 		int i = 0;
 		int xIncrement = 0;
-		foreach(Ability ability in activePartyMember.abilityList){
+		foreach(Ability ability in activePartyMember.abilities){
 			if (i != 0) {
 				if (xIncrement > 3)
 					xIncrement = 0;
@@ -270,7 +270,7 @@ public class CombatMenu : MonoBehaviour {
 	public void DoAttack(){
 		selectionMode = SelectionModes.None;
 		HideSubActions ();
-		SelectAbility (activePartyMember.abilityList [0]);
+		SelectAbility (activePartyMember.abilities [0]);
 	}
 
 	public void SelectAbility(Ability ability){

@@ -4,15 +4,13 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 
-public class PartyMember : MonoBehaviour, IAttackable {
+public class PartyMember : Being, IAttackable {
 
 	public static List<PartyMember> members = new List<PartyMember>();
 	public delegate void ActionDelegate(PartyMember originator, GameObject target);
 	public string memberName;
-	public List<Ability> abilityList = new List<Ability>();
 	public Job job;
 	public static int currency;
-	public int strength = 0;
 	public int magicPoints = 0;
 	public int hitPoints = 0;
 	public int agility = 0;
@@ -27,6 +25,7 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	public Turnable turnable;
 	public int maxHitPoints = 0;
 	public int maxMagicPoints = 0;
+	public List<Ability> abilities = new List<Ability> ();
 
 	public int Strength(){
 		return(job.Strength () + this.strength);
@@ -86,13 +85,13 @@ public class PartyMember : MonoBehaviour, IAttackable {
 
 	// Use this for initialization
 	void Start () {
+		abilities.Add (new AbilityAttack());
 		turnable = GetComponent<Turnable> ();
 		magicPoints = maxMagicPoints;
 		members.Add (this);
 		overlay = transform.Find ("Overlay").gameObject;
 		HideOverlay ();
 		SetJob ();
-		SetAbilities ();
 		SetLevelUps ();
 		hitPoints = MaxHitPoints();
 		currency = 500;
@@ -121,6 +120,8 @@ public class PartyMember : MonoBehaviour, IAttackable {
 	void SetJob(){
 		int randomValue = UnityEngine.Random.Range(0, Job.jobs.Count);
 		job = Job.jobs[randomValue];
+		job.partyMember = this;
+//		job.Bootstrap ();
 	}
 	
 	// Update is called once per frame
@@ -158,12 +159,6 @@ public class PartyMember : MonoBehaviour, IAttackable {
 
 	public void DestroyMe(){
 
-	}
-
-	public void SetAbilities(){
-		foreach(Type jobType in job.Abilities()){
-			abilityList.Add ((Ability)Activator.CreateInstance(jobType));
-		}
 	}
 
 	public void UpdateLevelUpSlot(int i){

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,6 +7,7 @@ public class EventQueue : MonoBehaviour {
 
 	public List<ActionEvent> actionEvents;
 	public static EventQueue instance;
+	public delegate void DelegateEvent(PartyMember originator, GameObject target);
 
 	public ActionEvent CurrentEvent(){
 		if (actionEvents.Count > 0) {
@@ -43,6 +45,13 @@ public class EventQueue : MonoBehaviour {
 		return(instance.actionEvents.Count - 1);
 	}
 
+	public static int AddLambda(Action lambda, int index){
+		ActionEvent actionEvent = new ActionEvent ();
+		actionEvent.lambda = lambda;
+		instance.actionEvents.Insert(index, actionEvent);
+		return(instance.actionEvents.Count - 1);
+	}
+
 	public static int AddShowCombatMenu(PartyMember partyMember, int index){
 		ActionEvent actionEvent = new ActionEvent ();
 		actionEvent.combatMenu = true;
@@ -76,6 +85,10 @@ public class EventQueue : MonoBehaviour {
 
 	public static int AddMessage(string message){
 		return(AddMessage (message, instance.actionEvents.Count));
+	}
+
+	public static int AddLambda(Action lambda){
+		return(AddLambda (lambda, instance.actionEvents.Count));
 	}
 
 	public static int AddShowCombatMenu(PartyMember partyMember){

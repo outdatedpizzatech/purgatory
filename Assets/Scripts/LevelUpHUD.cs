@@ -33,8 +33,11 @@ public class LevelUpHUD : MonoBehaviour {
 	}
 
 	public void SelectBoostLevelUps(){
-		print ("AAAA");
 		SelectLevelUpType (LevelUpStruct.LevelUpTypes.Boost);
+	}
+
+	public void SelectAbilityLevelUps(){
+		SelectLevelUpType (LevelUpStruct.LevelUpTypes.Ability);
 	}
 
 	public void Show(){
@@ -68,7 +71,6 @@ public class LevelUpHUD : MonoBehaviour {
 	}
 
 	public static void SelectLevelUpType(LevelUpStruct.LevelUpTypes levelUpType){
-		print ("BBBB");
 		selectedLevelUpType = levelUpType;
 		Prompt.Clear ();
 		ShowLevelUps ();
