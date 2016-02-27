@@ -6,7 +6,7 @@ public class AbilityPowerBreak : Ability {
 
 	// Use this for initialization
 	public override bool Perform (PartyMember originator, GameObject target) {
-		EventQueue.AddMessage (originator.memberName + " done used power break!");
+		EventQueue.AddMessage (originator.beingName + " done used power break!");
 		EventQueue.AddLambda (() => {
 			target.GetComponent<Being>().strengthOffset -= 5;
 		});

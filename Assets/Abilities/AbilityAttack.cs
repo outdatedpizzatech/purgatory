@@ -7,7 +7,7 @@ public class AbilityAttack : Ability {
 	public override bool Perform (PartyMember originator, GameObject target) {
 		
 		int damage = Random.Range (1 + originator.strength, 5 + originator.strength);
-		EventQueue.AddMessage (originator.memberName + " attacks!");
+		EventQueue.AddMessage (originator.beingName + " attacks!");
 		EventQueue.AddEvent (target, damage, DamageTypes.Physical);
 		return(true);
 	}

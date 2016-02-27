@@ -8,6 +8,10 @@ public class Baddie : Being, IAttackable {
 	private Button button;
 	public Turnable turnable;
 
+	public override int Strength(){
+		return(strength + strengthOffset);
+	}
+
 	public virtual int Level(){
 		return(0);
 	}
@@ -24,7 +28,7 @@ public class Baddie : Being, IAttackable {
 	}
 
 	public void DestroyMe(){
-		EventQueue.AddMessage (Name() + " is destroyed", 1);
+		EventQueue.AddMessage (beingName + " is destroyed", 1);
 		RoomController.instance.enemies.Remove (gameObject);
 		BattleController.instance.turnables.Remove (turnable);
 		Destroy (gameObject);
@@ -32,17 +36,13 @@ public class Baddie : Being, IAttackable {
 
 	public void ReceiveHit(int damage, DamageTypes damageType){
 		if (gameObject != null) {
-			int index = EventQueue.AddMessage (Name () + " surstains " + damage + " damage");
+			int index = EventQueue.AddMessage (beingName + " surstains " + damage + " damage");
 			hitPoints -= damage;
 
 			if (hitPoints < 1) {
 				EventQueue.AddDestroy (gameObject, index + 1);
 			}
 		}
-	}
-
-	public virtual string Name(){
-		return("NoName");
 	}
 
 	public int HitPoints(){

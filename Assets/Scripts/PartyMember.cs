@@ -8,7 +8,6 @@ public class PartyMember : Being, IAttackable {
 
 	public static List<PartyMember> members = new List<PartyMember>();
 	public delegate void ActionDelegate(PartyMember originator, GameObject target);
-	public string memberName;
 	public Job job;
 	public static int currency;
 	public int magicPoints = 0;
@@ -27,8 +26,8 @@ public class PartyMember : Being, IAttackable {
 	public int maxMagicPoints = 0;
 	public List<Ability> abilities = new List<Ability> ();
 
-	public int Strength(){
-		return(job.Strength () + this.strength);
+	public override int Strength(){
+		return(job.Strength () + strength + strengthOffset);
 	}
 
 	public int Agility(){
@@ -89,6 +88,7 @@ public class PartyMember : Being, IAttackable {
 		turnable = GetComponent<Turnable> ();
 		magicPoints = maxMagicPoints;
 		members.Add (this);
+		this.beingName = "Rock " + members.Count.ToString ();
 		overlay = transform.Find ("Overlay").gameObject;
 		HideOverlay ();
 		SetJob ();
@@ -153,7 +153,7 @@ public class PartyMember : Being, IAttackable {
 	}
 
 	public void ReceiveHit(int damage, DamageTypes damageType){
-		EventQueue.AddMessage (memberName + " sustains " + damage + " damage", 1);
+		EventQueue.AddMessage (beingName + " sustains " + damage + " damage", 1);
 		hitPoints -= damage;
 	}
 

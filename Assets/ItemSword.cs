@@ -20,7 +20,7 @@ public class ItemSword : Item {
 	public override bool Use(PartyMember originator, GameObject target) {
 		bool success = false;
 		if (originator.gameObject == target) {
-			EventQueue.AddMessage (owner.memberName + " equipped sword");
+			EventQueue.AddMessage (owner.beingName + " equipped sword");
 			originator.turnable.ResetTurn();
 			owner.Equip (this);
 			success = true;

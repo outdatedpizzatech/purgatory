@@ -16,7 +16,7 @@ public class ItemPotion : Item {
 	public override bool Use(PartyMember originator, GameObject target) {
 		bool success = false;
 		if (originator.gameObject == target) {
-			EventQueue.AddMessage (originator.memberName + " drank a potion");
+			EventQueue.AddMessage (originator.beingName + " drank a potion");
 			EventQueue.AddEvent (target.gameObject, -20, DamageTypes.Physical);
 			owner.turnable.ResetTurn();
 			owner.RemoveItem (this);

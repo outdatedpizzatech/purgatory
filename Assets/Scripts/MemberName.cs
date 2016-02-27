@@ -15,6 +15,6 @@ public class MemberName : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		text.text = partyMember.memberName;
+		text.text = partyMember.beingName;
 	}
 }

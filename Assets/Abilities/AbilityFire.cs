@@ -8,7 +8,7 @@ public class AbilityFire : Ability {
 		if (originator.magicPoints > 0) {
 			originator.magicPoints -= 1;
 			int damage = Random.Range (10, 20);
-			EventQueue.AddMessage (originator.memberName + "casts fire!");
+			EventQueue.AddMessage (originator.beingName + "casts fire!");
 			EventQueue.AddEvent (target, damage, DamageTypes.Fire);
 			return(true);
 		} else {

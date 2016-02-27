@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using System;
 
 public class Being : MonoBehaviour {
-	
+
+	public string beingName;
 	public int strength = 0;
 	public int strengthOffset = 0;
 
@@ -17,6 +18,10 @@ public class Being : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public virtual int Strength(){
+		return(0);
 	}
 
 
