@@ -14,4 +14,9 @@ public class BuffRiposte {
 		}
 		return(0);
 	}
+
+	public bool NextTurn (){
+		return(false);
+	}
+
 }

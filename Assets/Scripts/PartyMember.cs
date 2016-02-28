@@ -27,6 +27,17 @@ public class PartyMember : Being, IAttackable {
 	public List<Ability> abilities = new List<Ability> ();
 	public List<BuffRiposte> buffs = new List<BuffRiposte> ();
 
+	public void TurnActive(){
+		int i = 0;
+		foreach (BuffRiposte buff in buffs) {
+			if (!buff.NextTurn ()) {
+				buffs[i] = null;
+			}
+			i++;
+		}
+		buffs.RemoveAll (buff => buff == null);
+	}
+
 	public override int Strength(){
 		return(job.Strength () + strength + strengthOffset);
 	}

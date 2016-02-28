@@ -57,6 +57,7 @@ public class BattleController : MonoBehaviour {
 
 					if (activePartyMember != null) {
 						if (!combatMenuDisplayed) {
+							activePartyMember.TurnActive ();
 							combatMenuDisplayed = true;
 							EventQueue.AddShowCombatMenu (activePartyMember);
 						}
