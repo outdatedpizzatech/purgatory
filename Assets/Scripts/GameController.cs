@@ -90,6 +90,9 @@ public class GameController : MonoBehaviour {
 	}
 
 	public static void ExitEncounter(){
+		foreach (PartyMember partyMember in PartyMember.members) {
+			partyMember.buffs.Clear ();
+		}
 		inEncounter = false;
 	}
 

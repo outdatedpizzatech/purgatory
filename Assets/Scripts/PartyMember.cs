@@ -26,6 +26,7 @@ public class PartyMember : Being, IAttackable {
 	public int maxMagicPoints = 0;
 	public List<Ability> abilities = new List<Ability> ();
 	public List<BuffRiposte> buffs = new List<BuffRiposte> ();
+	public float threat;
 
 	public void TurnActive(){
 		int i = 0;
