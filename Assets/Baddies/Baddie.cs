@@ -9,7 +9,7 @@ public class Baddie : Being, IAttackable {
 	public Turnable turnable;
 
 	public override int Strength(){
-		return(strength + strengthOffset);
+		return(Mathf.Clamp(strength + strengthOffset, 0, 9999));
 	}
 
 	public virtual int Level(){

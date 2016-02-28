@@ -39,7 +39,7 @@ public class PartyMember : Being, IAttackable {
 	}
 
 	public override int Strength(){
-		return(job.Strength () + strength + strengthOffset);
+		return(Mathf.Clamp(job.Strength () + strength + strengthOffset, 0, 9999));
 	}
 
 	public int Agility(){
