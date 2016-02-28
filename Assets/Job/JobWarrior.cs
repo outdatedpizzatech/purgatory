@@ -5,21 +5,6 @@ using System;
 
 public class JobWarrior : Job {
 
-	public override List<Type> Abilities(){
-		List<Type> list = new List<Type> ();
-		list.Add (typeof(AbilityHeal));
-		list.Add (typeof(AbilityHeal));
-		list.Add (typeof(AbilityFire));
-		list.Add (typeof(AbilityHeal));
-		list.Add (typeof(AbilityHeal));
-		list.Add (typeof(AbilityHeal));
-		list.Add (typeof(AbilityHeal));
-		list.Add (typeof(AbilityHeal));
-		list.Add (typeof(AbilityHeal));
-		list.Add (typeof(AbilityHeal));
-		return(list);
-	}
-
 	public override string Name(){
 		return("Warrior");
 	}
@@ -51,6 +36,7 @@ public class JobWarrior : Job {
 		levelUps.Add (new LevelUpStruct ("Boost III", "STR + 15, Max HP + 70", 1000, "button_strength_up_2", BoostIII, LevelUpStruct.LevelUpTypes.Boost));
 		levelUps.Add (new LevelUpStruct ("Boost IV", "STR + 30, Max HP + 150", 2000, "button_strength_up_2", BoostIV, LevelUpStruct.LevelUpTypes.Boost));
 		levelUps.Add (new LevelUpStruct ("Boost V", "STR + 75, Max HP + 300", 5000, "button_strength_up_2", BoostV, LevelUpStruct.LevelUpTypes.Boost));
+		levelUps.Add (new LevelUpStruct ("Riposte", "Counters enemy attacks", 0, "button_strength_up_2", Riposte, LevelUpStruct.LevelUpTypes.Ability));
 		levelUps.Add (new LevelUpStruct ("Power Break", "Reduces enemy strength by 5%", 100, "button_strength_up_2", PowerBreak, LevelUpStruct.LevelUpTypes.Ability));
 		return(levelUps);
 	}
@@ -93,6 +79,12 @@ public class JobWarrior : Job {
 	public void PowerBreak(PartyMember partyMember){
 		partyMember.abilities.Add (new AbilityPowerBreak());
 		EventQueue.AddMessage ("Learned Power Break!");
+	}
+
+
+	public void Riposte(PartyMember partyMember){
+		partyMember.abilities.Add (new AbilityRiposte());
+		EventQueue.AddMessage ("Learned Riposte!");
 	}
 
 	public override string SpriteName(){

@@ -13,6 +13,7 @@ public class ActionEvent {
 	public bool combatMenu;
 	public PartyMember partyMember;
 	public Action lambda;
+	public GameObject attacker;
 
 	public void Execute(){
 		if (combatMenu) {
@@ -25,7 +26,7 @@ public class ActionEvent {
 			}else if (attackable != null) {
 				IAttackable v = attackable.GetComponent (typeof(IAttackable)) as IAttackable;
 				if (!destroy) {
-					v.ReceiveHit (damage, damageType);
+					v.ReceiveHit (attacker, damage, damageType);
 				} else {
 					v.DestroyMe ();
 				}

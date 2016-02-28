@@ -3,7 +3,7 @@ using System.Collections;
 
 public interface IAttackable {
 
-	void ReceiveHit(int damage, DamageTypes damageType);
+	void ReceiveHit(GameObject attacker, int damage, DamageTypes damageType);
 
 	void DestroyMe ();
 

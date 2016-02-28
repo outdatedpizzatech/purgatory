@@ -8,7 +8,7 @@ public class AbilityAttack : Ability {
 		
 		int damage = Random.Range (1 + originator.strength, 5 + originator.strength);
 		EventQueue.AddMessage (originator.beingName + " attacks!");
-		EventQueue.AddEvent (target, damage, DamageTypes.Physical);
+		EventQueue.AddEvent (originator.gameObject, target, damage, DamageTypes.Physical);
 		return(true);
 	}
 

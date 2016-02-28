@@ -9,7 +9,7 @@ public class AbilityHeal : Ability {
 			originator.magicPoints -= 1;
 			int damage = Random.Range (10, 20);
 			EventQueue.AddMessage (originator.beingName + " casts heal!");
-			EventQueue.AddEvent (target, -damage, DamageTypes.Physical);
+			EventQueue.AddEvent (originator.gameObject, target, -damage, DamageTypes.Physical);
 			return(true);
 		} else {
 			EventQueue.AddMessage ("need more mp");

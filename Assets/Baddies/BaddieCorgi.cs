@@ -12,7 +12,7 @@ public class BaddieCorgi : Baddie {
 		PartyMember target = PartyMember.members [randomValue];
 		int damage = Random.Range (1, 10);
 		EventQueue.AddMessage (beingName + " bites " + target.beingName + "!");
-		EventQueue.AddEvent (target.gameObject, damage, DamageTypes.Physical);
+		EventQueue.AddEvent (gameObject, target.gameObject, damage, DamageTypes.Physical);
 		turnable.ResetTurn ();
 	}
 }

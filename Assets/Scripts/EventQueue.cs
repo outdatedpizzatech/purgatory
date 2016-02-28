@@ -36,11 +36,12 @@ public class EventQueue : MonoBehaviour {
 		}
 	}
 
-	public static int AddEvent(GameObject attackable, int damage, DamageTypes damageType, int index){
+	public static int AddEvent(GameObject attacker, GameObject attackable, int damage, DamageTypes damageType, int index){
 		ActionEvent actionEvent = new ActionEvent ();
 		actionEvent.attackable = attackable;
 		actionEvent.damage = damage;
 		actionEvent.damageType = damageType;
+		actionEvent.attacker = attacker;
 		instance.actionEvents.Insert(index, actionEvent);
 		return(instance.actionEvents.Count - 1);
 	}
@@ -75,8 +76,8 @@ public class EventQueue : MonoBehaviour {
 		return(instance.actionEvents.Count - 1);
 	}
 
-	public static int AddEvent(GameObject attackable, int damage, DamageTypes damageType){
-		return(AddEvent (attackable, damage, damageType, instance.actionEvents.Count));
+	public static int AddEvent(GameObject attacker, GameObject attackable, int damage, DamageTypes damageType){
+		return(AddEvent (attacker, attackable, damage, damageType, instance.actionEvents.Count));
 	}
 
 	public static int AddDestroy(GameObject attackable){

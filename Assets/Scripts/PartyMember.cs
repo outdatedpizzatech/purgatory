@@ -25,6 +25,7 @@ public class PartyMember : Being, IAttackable {
 	public int maxHitPoints = 0;
 	public int maxMagicPoints = 0;
 	public List<Ability> abilities = new List<Ability> ();
+	public List<BuffRiposte> buffs = new List<BuffRiposte> ();
 
 	public override int Strength(){
 		return(job.Strength () + strength + strengthOffset);
@@ -152,7 +153,10 @@ public class PartyMember : Being, IAttackable {
 		}
 	}
 
-	public void ReceiveHit(int damage, DamageTypes damageType){
+	public void ReceiveHit(GameObject attacker, int damage, DamageTypes damageType){
+		foreach (BuffRiposte buff in buffs) {
+			buff.Perform (this, attacker, damage);
+		}
 		EventQueue.AddMessage (beingName + " sustains " + damage + " damage", 1);
 		hitPoints -= damage;
 	}

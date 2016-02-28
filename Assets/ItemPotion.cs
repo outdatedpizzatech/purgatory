@@ -17,7 +17,7 @@ public class ItemPotion : Item {
 		bool success = false;
 		if (originator.gameObject == target) {
 			EventQueue.AddMessage (originator.beingName + " drank a potion");
-			EventQueue.AddEvent (target.gameObject, -20, DamageTypes.Physical);
+			EventQueue.AddEvent (originator.gameObject, target.gameObject, -20, DamageTypes.Physical);
 			owner.turnable.ResetTurn();
 			owner.RemoveItem (this);
 			Destroy (gameObject);

@@ -34,7 +34,7 @@ public class Baddie : Being, IAttackable {
 		Destroy (gameObject);
 	}
 
-	public void ReceiveHit(int damage, DamageTypes damageType){
+	public void ReceiveHit(GameObject attacker, int damage, DamageTypes damageType){
 		if (gameObject != null) {
 			int index = EventQueue.AddMessage (beingName + " surstains " + damage + " damage");
 			hitPoints -= damage;
